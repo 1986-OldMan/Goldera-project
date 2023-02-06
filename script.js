@@ -8,7 +8,7 @@ const GoldProductArray = [
     "Rand Refinery" , "Perth Mint" ,
     "Maple Leaf 1oz" , "Vienna Philharmonic",
     "American Eagle" , "American Buffalo" , 
-    "Britannia 1 oz"
+    "Britannia 1 oz" , "South African Mint"
 ];
 
 const searchInput = document.querySelector(".searchInput");
