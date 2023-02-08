@@ -1,4 +1,11 @@
 
+window.addEventListener("load", () => {
+
+    console.log("This function is executed once the page is fully loaded");
+
+  });
+  
+
 const GoldProductArray = [
 
     "Gold" , "Gold coins" ,
@@ -8,7 +15,9 @@ const GoldProductArray = [
     "Rand Refinery" , "Perth Mint" ,
     "Maple Leaf 1oz" , "Vienna Philharmonic",
     "American Eagle" , "American Buffalo" , 
-    "Britannia 1 oz" , "South African Mint"
+    "Britannia 1 oz" , "South African Mint",
+    "1 Ducat Franz Iosif Osterreich" , "20 Franci Marianne France",
+    "4 Ducat Franz Iosif Osterreich"
 ];
 
 const searchInput = document.querySelector(".searchInput");
@@ -37,6 +46,7 @@ input.onkeyup = (click) => {
         emptyArray = emptyArray.map((data)=>{
       
             return data = '<li>'+ data;
+
         });
 
         searchInput.classList.add("active"); 
@@ -73,4 +83,3 @@ function showSuggestions(list){
 
     resultBox.innerHTML = listData;
 }
-
