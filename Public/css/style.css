@@ -44,7 +44,7 @@ body {
     top: 0;
     left: 0;
     background-color: #f48f01;
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 .over-image-overlay {
@@ -68,7 +68,7 @@ body {
     color: antiquewhite;
     font-size: 30px;
     font-weight: 700;
-    margin-bottom: 50px;
+    margin-bottom: 60px;
 
 } 
 
