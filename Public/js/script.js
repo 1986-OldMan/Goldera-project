@@ -21,24 +21,24 @@ const icon = searchInput.querySelector(".icon");
 
 let linkTag = searchInput.querySelector("a");
 
-let webLink;
+input.onkeyup = (click) => {
 
-input.onkeyup = (e) => {
-
-    let userData = e.target.value; 
+    let userData = click.target.value; 
 
     let emptyArray = [];
 
     if(userData){
 
-        emptyArray = GoldProductArray.filter((data)=>{
+        emptyArray = GoldProductArray.filter((data) => {
             
             return data.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase()); 
         });
+
         emptyArray = emptyArray.map((data)=>{
       
             return data = '<li>'+ data;
         });
+
         searchInput.classList.add("active"); 
 
         showSuggestions(emptyArray);
@@ -49,6 +49,7 @@ input.onkeyup = (e) => {
          
             allList[i].setAttribute("onclick", "select(this)");
         }
+
     } else {
         
         searchInput.classList.remove("active");
@@ -69,6 +70,7 @@ function showSuggestions(list){
 
         listData = list.join('');
     }
+
     resultBox.innerHTML = listData;
 }
 
