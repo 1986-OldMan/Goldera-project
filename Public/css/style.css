@@ -68,7 +68,7 @@ body {
     color: antiquewhite;
     font-size: 30px;
     font-weight: 700;
-    margin-bottom: 60px;
+    margin-bottom: 80px;
 
 } 
 
@@ -79,7 +79,7 @@ body {
  
 ::selection {
   
-    color: #fff;
+    color: whitesmoke;
     background: #ed9200;
   }
   
@@ -94,7 +94,7 @@ body {
   
   .container .searchInput {
   
-    background: #fff;
+    background: whitesmoke;
     width: 30%;
     border-radius: 5px;
     position: fixed;
@@ -152,7 +152,7 @@ body {
 
   .resultBox li:hover {
   
-    background: #efefef;
+    background: whitesmoke;
   }
   
   .searchInput .icon {

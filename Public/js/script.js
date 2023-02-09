@@ -1,7 +1,7 @@
 
 window.addEventListener("load", () => {
 
-    console.log("This function is executed once the page is fully loaded");
+    console.log("Page is fully loaded");
 
   });
   
