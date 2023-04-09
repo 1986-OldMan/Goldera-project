@@ -1,8 +1,7 @@
-
 Hello.
 
-My project is a page with home page.
+My project is a page with home page and registration form(Sign up and Sign in between page).
 
-in the future i will added js file,at this moment i'm used HTML,CSS,bootstrap to create my project.
+I the future i'l added backend code for this project.
 
 Enjoy the procces!
