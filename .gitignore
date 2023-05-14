@@ -1,4 +1,11 @@
-# folder
+# ignore the node modules folder 
 node_modules/
+config.env
 
+
+# Editor directories and files
 node_modules
+
+
+# Logs
+.log

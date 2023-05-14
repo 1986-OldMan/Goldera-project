@@ -1,7 +1,7 @@
-Hello.
+Aloha!
 
-My project is a page with home page and registration form(Sign up and Sign in between page).
+My project is a website with a home page, registration form, and products page.
 
-I the future i'l added backend code for this project.
+In the future, I'll add backend code to this project. Enjoy the process!
 
 Enjoy the procces!
