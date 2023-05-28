@@ -4,9 +4,8 @@
   "description": "Gold era",
   "main": "app.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
-    "start:prod":"NODE_ENV=production nodemon server.js"
-
+    "start": "nodemon server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js"
   },
   "author": "Alexandru Ivanescu",
   "license": "ISC",
@@ -20,6 +19,7 @@
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
+    "mongoose": "^5.13.17",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql-migrations": "^1.0.7",
