@@ -25,16 +25,27 @@ const productSchema = new mongoose.Schema({
 
     price: {
         type: Number ,
-        require: [true , 'A product must have a name']
+        required: [true , 'A product must have a name']
     },
 
     id: {
         type: Number ,
-        require: [true , 'A product must have an id']
+        required: [true , 'A product must have an id']
     }
 });
 
+//Creating documents and testing the model(Schema)
 const Product = mongoose.model('Product' , productSchema);
+
+const testProduct = new Product({
+    name: 'King Charles III Britannia One Ounce Silver Coin 2023' ,
+    price: 40 ,
+    id: 1
+});
+
+//Testing the model
+
+testProduct.save().then(doc => {console.log(doc)}).catch(err => {console.log('ERROR ---> :' , err)});
 
 const port = process.env.PORT || 8000;
 app.listen(port , () => {
