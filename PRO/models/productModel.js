@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {Schema} = mongoose;
 
 //Create a schema for products
 const productSchema = new mongoose.Schema({
@@ -16,6 +17,10 @@ const productSchema = new mongoose.Schema({
     id: {
         type: Number ,
         required: [true , 'A product must have an id']
+    },
+
+    stock: {
+        type: Schema.Types.Mixed
     }
 });
 

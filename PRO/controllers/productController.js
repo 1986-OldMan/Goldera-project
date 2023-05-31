@@ -15,16 +15,16 @@ const Product = require('./../models/productModel');
 //   next();
 // }
 
-exports.checkBody = (req , res , next) => {
-   if(!req.body.name || !req.body.price) {
-    return res.status(400).json({
-      status : 'fail',
-      requestedAt: req.requestTime ,
-      message: 'Missing name or price'
-    });
-  }
-  next()
-};
+// exports.checkBody = (req , res , next) => {
+//    if(!req.body.name || !req.body.price) {
+//     return res.status(400).json({
+//       status : 'fail',
+//       requestedAt: req.requestTime ,
+//       message: 'Missing name or price'
+//     });
+//   }
+//   next()
+// };
 
 exports.getAllProducts = (req , res) => {
 
@@ -50,16 +50,27 @@ exports.getProduct = (req , res) => {
   // });
 };
 
-exports.createProduct = (req , res) => {
+//create new product in other way and using async ,try and catch.
+exports.createProduct = async (req , res) => {
+  try{
+    const newProduct = await Product.create(req.body);
   res.status(201).json({
     status: "success",
     data: {
       product: newProduct,
     }
   });
+ } catch (err) {
+  res.status(400).json({
+    status: 'fail' , 
+    message: err
+  });
+ }
 };
 
 exports.updateProduct = (req , res) => {
+
+  //The HTTP 201 Created success status response code indicates that the request has succeeded and has led to the creation of a resource.
   res.status(200).json({
     requestedAt: req.requestTime,
     status: "success",
