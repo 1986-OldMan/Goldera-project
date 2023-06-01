@@ -26,28 +26,42 @@ const Product = require('./../models/productModel');
 //   next()
 // };
 
-exports.getAllProducts = (req , res) => {
+exports.getAllProducts = async (req , res) => {
+ try{
+  const products = await Product.find()
+  //To find all products in database use find() methode. In mongoSH/mongoDB use this : db.NAME_COLLECTION.find()
 
   res.status(200).json({
-    status: "successfully added the products in list",
-    requestedAt: req.requestTime ,
-    // result: products.length ,
-    // data: {
-    //   products,
-    // },
+    status : 'success' ,
+    result: products.length ,
+    data: {
+      products
+    }
   });
+ } catch (err) {
+   res.status(404).json({
+    status: 'fail' ,
+    message: err
+  });
+ }
 };
 
-exports.getProduct = (req , res) => {
-  console.log(req.params);
-  const id = req.params.id * 1;
-  // const product = products.find((el) => el.id === id);
-  // res.status(200).json({
-  //   status: "success",
-  //   data: {
-  //     product,
-  //   },
-  // });
+exports.getProduct = async (req , res) => {
+ try {
+  const product = await Product.findById(req.params.id);
+  // For MongoDB and line of code wrote in line 50 have reference for the id of product in database: Product.findOne({_id: req.params.id}).
+  res.status(200).json({
+    status: "success",
+    data: {
+      product,
+    },
+  });
+ } catch (err) {
+   res.status(404).json({
+    status: 'fail' ,
+    message: err
+  });
+ }
 };
 
 //create new product in other way and using async ,try and catch.
