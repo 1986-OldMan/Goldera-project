@@ -105,11 +105,19 @@ exports.updateProduct = async (req , res) => {
  }
 };
 
-exports.deleteProduct = (req , res) => {
- 
+exports.deleteProduct = async (req , res) => {
+try {
+  await Product.findByIdAndDelete(req.params.id);
+  
   //The HTTP 204 No Content success status response code indicates that a request has succeeded, but that the client doesn't need to navigate away from its current page
   res.status(204).json({
     status: "success",
     data: null,
   });
+} catch (err) {
+  res.status(400).json({
+    status : 'fail' ,
+    message: err
+  })
+}
 };
