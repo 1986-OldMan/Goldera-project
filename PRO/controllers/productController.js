@@ -68,7 +68,8 @@ exports.getProduct = async (req , res) => {
 exports.createProduct = async (req , res) => {
   try{
     const newProduct = await Product.create(req.body);
-  res.status(201).json({
+    //The HTTP 201 Created success status response code indicates that the request has succeeded and has led to the creation of a resource.
+    res.status(201).json({
     status: "success",
     data: {
       product: newProduct,
@@ -82,17 +83,26 @@ exports.createProduct = async (req , res) => {
  }
 };
 
-exports.updateProduct = (req , res) => {
-
-  //The HTTP 201 Created success status response code indicates that the request has succeeded and has led to the creation of a resource.
+exports.updateProduct = async (req , res) => {
+ try {
+  const product = await Product.findByIdAndUpdate(req.params.id , req.body , {
+    new: true ,
+    //if true, runs update validators on this command. Update validators validate the update operation against the model's schema
+    runValidators: true
+  })
   res.status(200).json({
     requestedAt: req.requestTime,
     status: "success",
     data: {
-      product: "Update product..."
+      product
     },
   });
-  console.log("updated product is complete!");
+ } catch (err) {
+  res.status(400).json({
+  status: 'fail' ,
+  message: err
+  });
+ }
 };
 
 exports.deleteProduct = (req , res) => {
