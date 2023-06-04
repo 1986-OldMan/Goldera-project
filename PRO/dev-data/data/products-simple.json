@@ -1,12 +1,12 @@
 [
     {
-        "id": 0,
+        "idProduct": 0,
         "name": "King Charles III Britannia One Ounce Gold Coin 2023",
         "price": 2000,
         "description": "The 2023 Charles III one ounce gold Britannia coin, sourced directly from The Royal Mint. This coin contains 1 troy ounce of pure, 999.9 fine gold. It is the first Britannia coin with the new portrait of His Majesty, King Charles III by Martin Jennings.",
         "manufacturer": "The Royal Mint",
-        "weight (grams)": 31.11,
-        "pure gold content (grams)": 31.10348,
+        "alloy": "Gold Au",
+        "weight": 31.11,
         "fineness": 9999,
         "dimensions": "32.69mm diameter",
         "stock": "in stock",
@@ -16,13 +16,13 @@
         ]
     },
     {
-        "id": 1,
+        "idProduct": 1,
         "name": "King Charles III Britannia One Ounce Silver Coin 2023",
         "price": 40,
         "description": "Due to the accession of His Majesty King Charles III The Royal Mint have launched a special second Britannia coin in 2023 featuring the effigy of the new King by Martin Jennings. These 2023 King Charles III Britannia silver coins contains 31.1 grams of fine silver at a purity of 999 parts per thousand. The 2023 Charles III 1oz silver Britannia coin is a legal tender coin in the UK, with a value of £2 and is therefore exempt from Capital Gains Tax.",
         "manufacturer": "The Royal Mint",
-        "weight (grams)": 31.21,
-        "pure silver content (grams)": 31.10348,
+        "alloy": "Silver Ag",
+        "weight": 31.21,
         "fineness": 999.9,
         "dimensions": "38.61mm diameter",
         "stock": "in stock",
@@ -32,9 +32,32 @@
         ]
     },
     {
-        "id": 2,
+        "idProduct": 2,
         "name": "Mistery box gold product",
+        "price": 1000,
         "description": "Mistery box with all type of gold , different carats of gold",
-        "price": 100
+        "manufacturer": "All manufacturer and unknown manufacturers",
+        "alloy": "Gold Au", 
+        "weight": "Different types of weights",
+        "fineness": "Different types of fineness",
+        "dimensions": "Different type of dimensions",
+        "stock": 10 ,
+        "images": []
+    },
+    {
+        "idProduct": 3,
+        "name": "1 OUNCE GOLD VIENNA PHILHARMONIC",
+        "price": 2000,
+        "description": "The Vienna Philharmonic coin in one-ounce gold (Troy ounce): The king of investment coins and the best-selling size. First introduced in 1989 along with the 1/4 ounce version, it contains a whole ounce of gold (31.1 grams). The Troy ounce is the precious metal trade’s unit of weight and the classic weight for bullion coins. It has a face value of 100 Euro.",
+        "manufacturer": "Münze Österreich",
+        "alloy": "Gold Au", 
+        "weight": 31.10,
+        "fineness": 999.9,
+        "dimensions": "27.00mm diameter",
+        "stock": "in stock",
+        "images": [
+            "Gold-2-1.png",
+            "Gold-2-2.png"
+        ]
     }
 ]
