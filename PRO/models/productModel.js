@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
 //Create a schema for products
+
+//type: Schema.Types.Mixed = it's for to have a number or string.
 const productSchema = new mongoose.Schema({
 
     idProduct: {
@@ -11,7 +13,8 @@ const productSchema = new mongoose.Schema({
     name: {
         type: String ,
         required: [true , 'A product must have a name'] ,
-        unique: true
+        unique: true,
+        trim: true
     },
 
     price: {
@@ -21,7 +24,8 @@ const productSchema = new mongoose.Schema({
 
     description: {
         type: String ,
-        required: [true , 'A product must have a description']
+        required: [true , 'A product must have a description'],
+        trim: true
     },
     
     manufacturer: {
@@ -40,7 +44,7 @@ const productSchema = new mongoose.Schema({
     },
 
     fineness: {
-        type: Number ,
+        type: Schema.Types.Mixed ,
         required: [true , 'A product must have fineness included']
     },
 

@@ -49,7 +49,7 @@ exports.getAllProducts = async (req , res) => {
 exports.getProduct = async (req , res) => {
  try {
   const product = await Product.findById(req.params.id);
-  // For MongoDB and line of code wrote in line 50 have reference for the id of product in database: Product.findOne({_id: req.params.id}).
+  // For MongoDB and line of code wrote in line 51 have reference for the id of product in database: Product.findOne({_id: req.params.id}).
   res.status(200).json({
     status: "success",
     data: {
