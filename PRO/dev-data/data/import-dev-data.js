@@ -1,9 +1,9 @@
-//------>THIS JS FILE IS ONLY FOR IMPORT/DELETE DATA FROM DB(DATABASE), FROM YOUR FILE JSON WITHIN THE PROJECT!<------
+//------>IMPORTANT, THIS JS FILE IS ONLY FOR IMPORT/DELETE DATA FROM DB(DATABASE), FROM YOUR JSON FILE WITHIN THE PROJECT!<------
 const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-// Require the model of your DB
+// Require the model of your DB and location to be specified
 const Product = require('./../../models/productModel');
 
 dotenv.config({
@@ -33,10 +33,12 @@ const products = JSON.parse(fs.readFileSync(`${__dirname}/products-simple.json` 
 const importData = async() => {
     try {
         await Product.create(products)
-        console.log('Data successfully loaded!');
+        console.log('Data successfully loaded in DB!');
     } catch (err) {
         console.log(err);
-    };
+    }
+    // The process.exit() function is a method in Node.js that terminates the current process and exits the program. 
+    //When called, it immediately stops the execution of the program and returns the control back to the operating system.
     process.exit();
 };
 
@@ -58,18 +60,18 @@ const deleteData = async () => {
 // The first element in the array is the absolute path to the Node, 
 // followed by the path to the file that's running and finally any command-line arguments provided when the process was initiated.
 
-// After to see in terminal the proccess of argv and create a new position in array write node dev-data/data/import-dev-data.js,
-// after in terminal you will see this :
+// After to see in terminal the proccess of argv in array, write node dev-data/data/import-dev-data.js,
+// after in terminal will see this : 
 // [
-    'C:\\Program Files\\nodejs\\node.exe' , [0]
-    'C:\\Users\\Alex\\OneDrive\\Desktop\\gold page\\pro\\dev-data\\data\\import-dev-data.js' , [1]
+    'C:\\PROGRAM_FILES\\nodejs\\node.exe' , [0]
+    'C:\\USERS\\USER_NAME_PC\\FOLDER_NAME\\LOCATION_PROJECT\\PROJECT_NAME\\pro\\dev-data\\data\\import-dev-data.js' , [1]
 // ]
 
-// and after added a new position in array with write this node dev-data/data/import-dev-data.js --import and in terminal will se this
+// and after added a new position in array with write this in terminal dev-data/data/import-dev-data.js --import and in terminal will se this
 
 //[
-    'C:\\Program Files\\nodejs\\node.exe', [0]
-    'C:\\Users\\Alex\\OneDrive\\Desktop\\gold page\\pro\\dev-data\\data\\import-dev-data.js' , [1]
+    'C:\\PROGRAM_FILES\\nodejs\\node.exe', [0]
+    'C:\\USERS\\USER_NAME_PC\\FOLDER_NAME\\LOCATION_PROJECT\\PROJECT_NAME\\pro\\dev-data\\data\\import-dev-data.js' , [1]
     '--import' , [2]
 // ]
 
@@ -80,5 +82,5 @@ if (process.argv[2] === '--import') {
 }
 
 // after that two types of commands will be used in the terminal :
-// node dev-data/data/import-dev-data.js --delete = to delete data from DB(DATABASE)
-// node dev-data/data/import-dev-data.js --import = to import data into DB(DATABASE)
+// node dev-data/data/import-dev-data.js --delete = to delete data from DB
+// node dev-data/data/import-dev-data.js --import = to import data into DB
