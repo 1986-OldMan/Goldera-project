@@ -28,9 +28,20 @@ const Product = require('./../models/productModel');
 
 exports.getAllProducts = async (req , res) => {
  try{
-  const products = await Product.find()
-  //To find all products in database use find() methode. In mongoSH/mongoDB use this : db.NAME_COLLECTION.find()
 
+  //Build the Query 
+  const queryObj = {...req.query}
+  const excludedFields = ['page' , 'sort' , 'limit' , 'fields'] 
+  excludedFields.forEach(el => delete queryObj[el]);
+
+  console.log(req.query , queryObj);
+  //To find all products in database use find() methode. In mongoSH/mongoDB use this : db.NAME_COLLECTION.find()
+  const query = Product.find(queryObj);
+
+  // Execute the Query
+  const products = await query
+
+  //Send response 
   res.status(200).json({
     status : 'success' ,
     result: products.length ,
