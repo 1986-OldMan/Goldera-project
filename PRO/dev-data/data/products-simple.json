@@ -2,10 +2,10 @@
     {
         "idProduct": 0,
         "name": "King Charles III Britannia One Ounce Gold Coin 2023",
-        "price": 2000,
+        "price": 1950,
         "description": "The 2023 Charles III one ounce gold Britannia coin, sourced directly from The Royal Mint. This coin contains 1 troy ounce of pure, 999.9 fine gold. It is the first Britannia coin with the new portrait of His Majesty, King Charles III by Martin Jennings.",
         "manufacturer": "The Royal Mint",
-        "alloy": "Gold Au",
+        "alloy": "Gold-Au",
         "weight": 31.11,
         "fineness": 9999,
         "dimensions": "32.69mm diameter",
@@ -18,10 +18,10 @@
     {
         "idProduct": 1,
         "name": "King Charles III Britannia One Ounce Silver Coin 2023",
-        "price": 40,
+        "price": 35,
         "description": "Due to the accession of His Majesty King Charles III The Royal Mint have launched a special second Britannia coin in 2023 featuring the effigy of the new King by Martin Jennings. These 2023 King Charles III Britannia silver coins contains 31.1 grams of fine silver at a purity of 999 parts per thousand. The 2023 Charles III 1oz silver Britannia coin is a legal tender coin in the UK, with a value of £2 and is therefore exempt from Capital Gains Tax.",
         "manufacturer": "The Royal Mint",
-        "alloy": "Silver Ag",
+        "alloy": "Silver-Ag",
         "weight": 31.21,
         "fineness": 999.9,
         "dimensions": "38.61mm diameter",
@@ -37,7 +37,7 @@
         "price": 1000,
         "description": "Mistery box with all type of gold , different carats of gold",
         "manufacturer": "All manufacturer and unknown manufacturers",
-        "alloy": "Gold Au", 
+        "alloy": "Gold-Au", 
         "weight": "Different types of weights",
         "fineness": "Different types of fineness",
         "dimensions": "Different type of dimensions",
@@ -47,10 +47,10 @@
     {
         "idProduct": 3,
         "name": "1 OUNCE GOLD VIENNA PHILHARMONIC",
-        "price": 2000,
+        "price": 1900,
         "description": "The Vienna Philharmonic coin in one-ounce gold (Troy ounce): The king of investment coins and the best-selling size. First introduced in 1989 along with the 1/4 ounce version, it contains a whole ounce of gold (31.1 grams). The Troy ounce is the precious metal trade’s unit of weight and the classic weight for bullion coins. It has a face value of 100 Euro.",
         "manufacturer": "Münze Österreich",
-        "alloy": "Gold Au", 
+        "alloy": "Gold-Au", 
         "weight": 31.10,
         "fineness": 999.9,
         "dimensions": "27.00mm diameter",
@@ -58,6 +58,38 @@
         "images": [
             "Gold-2-1.png",
             "Gold-2-2.png"
+        ]
+    },
+    {
+        "idProduct": 4,
+        "name": "1 OUNCE SILVER VIENNA PHILHARMONIC",
+        "price": 33,
+        "description": "When the Austrian Mint first issued Vienna Philharmonic coins in silver in February 2008, it was the first time that a European silver bullion coin had been brought on to the market featuring silver of 99.9 per cent purity. The market had long been waiting for a product of these characteristics and within a month of the date of issue, the millionth coin was struck. By the end of 2008, eight million Vienna Philharmonic coins in silver had been sold. Since sales began on 1 February 2008, this silver coin has been struck exclusively in the 1 ounce version and in a quantity that reflects market demand.",
+        "manufacturer": "Münze Österreich",
+        "alloy": "Silver-Ag", 
+        "weight": 31.10,
+        "fineness": 999.9,
+        "dimensions": "37.00mm diameter",
+        "stock": "in stock",
+        "images": [
+            "Silver-2-1.png",
+            "Silver-2-2.png"
+        ]
+    },
+    {
+        "idProduct": 5,
+        "name": "10 oz Magnificent Maple Leaf Silver Coin",
+        "price": 332,
+        "description": "The 10 oz Silver Magnificent Maple Leaves Coin from the Royal Canadian Mint certainly lives up to its name. A magnificent 10 troy ounces of .9999 silver in each coin and a superbly detailed design featuring the leaves of the sugar maple, a symbol of Canada that’s recognised all over the world.",
+        "manufacturer": "Royal Canadian Mint",
+        "alloy": "Silver-Ag", 
+        "weight": 311.035,
+        "fineness": 999.9,
+        "dimensions": "76.25mm diameter",
+        "stock": "in stock",
+        "images": [
+            "Silver-2-1.png",
+            "Silver-2-2.png"
         ]
     }
 ]

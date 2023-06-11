@@ -30,14 +30,17 @@ exports.getAllProducts = async (req , res) => {
  try{
 
   //Build the Query 
+  // 1. Filtering
   const queryObj = {...req.query}
   const excludedFields = ['page' , 'sort' , 'limit' , 'fields'] 
   excludedFields.forEach(el => delete queryObj[el]);
 
-  console.log(req.query , queryObj);
-  //To find all products in database use find() methode. In mongoSH/mongoDB use this : db.NAME_COLLECTION.find()
-  const query = Product.find(queryObj);
+  // 2. Advanced filtering
+  let queryString = JSON.stringify(queryObj);
+  queryString = queryString.replace(/\b(gte|gt|lte|lt|eq)\b/g , match => `$${match}`);
 
+  console.log(req.query , JSON.parse(queryString));
+  const query = Product.find(JSON.parse(queryString));
   // Execute the Query
   const products = await query
 
@@ -60,7 +63,7 @@ exports.getAllProducts = async (req , res) => {
 exports.getProduct = async (req , res) => {
  try {
   const product = await Product.findById(req.params.id);
-  // For MongoDB and line of code wrote in line 51 have reference for the id of product in database: Product.findOne({_id: req.params.id}).
+  // For MongoDB and line of code wrote in line 62 have reference for the id of product in database: Product.findOne({_id: req.params.id}).
   res.status(200).json({
     status: "success",
     data: {
