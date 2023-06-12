@@ -1,46 +1,34 @@
-// const fs = require("fs");
 const Product = require('./../models/productModel');
-
-// const products = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/products-simple.json`));
-
-// exports.checkID = (req , res , next , val) => {
-//   console.log(`Product id is ${val}`);
-  
-//   if (req.params.id * 1 > products.length) {
-//     return res.status(404).json({
-//       status: "fail",
-//       message: "Invalid ID",
-//     });
-//   }
-//   next();
-// }
-
-// exports.checkBody = (req , res , next) => {
-//    if(!req.body.name || !req.body.price) {
-//     return res.status(400).json({
-//       status : 'fail',
-//       requestedAt: req.requestTime ,
-//       message: 'Missing name or price'
-//     });
-//   }
-//   next()
-// };
 
 exports.getAllProducts = async (req , res) => {
  try{
 
   //Build the Query 
-  // 1. Filtering
+  // 1A. Filtering
+  //The code const queryObj = {...req.query} creates a new object queryObj by copying the properties and values from the req.query object using the object spread syntax.
   const queryObj = {...req.query}
   const excludedFields = ['page' , 'sort' , 'limit' , 'fields'] 
   excludedFields.forEach(el => delete queryObj[el]);
 
-  // 2. Advanced filtering
+  // 1B. Advanced filtering
+  //In regular expressions, The \b is a word boundary anchor. It matches a position between a word character.
+  //In regular expressions, the /g flag is known as the "global" flag. When it is used, the regular expression pattern is applied globally, meaning it matches all occurrences of the pattern within the input string, rather than just the first occurrence.
   let queryString = JSON.stringify(queryObj);
   queryString = queryString.replace(/\b(gte|gt|lte|lt|eq)\b/g , match => `$${match}`);
 
-  console.log(req.query , JSON.parse(queryString));
-  const query = Product.find(JSON.parse(queryString));
+  // console.log(req.query , JSON.parse(queryString));
+  let query = Product.find(JSON.parse(queryString));
+
+  // 2. Sorting
+  if(req.query.sort) {
+    //using comma to separate(split) the element you want to sorted and after join back with join().
+    const sortBy = req.query.sort.split(',').join(' ')
+    console.log(sortBy);
+    query = query.sort(sortBy);
+  } else {
+    query = query.sort('-createdAt');
+  }
+  
   // Execute the Query
   const products = await query
 
@@ -63,7 +51,7 @@ exports.getAllProducts = async (req , res) => {
 exports.getProduct = async (req , res) => {
  try {
   const product = await Product.findById(req.params.id);
-  // For MongoDB and line of code wrote in line 62 have reference for the id of product in database: Product.findOne({_id: req.params.id}).
+  // For MongoDB and line of code wrote above have reference for the id of product in database: Product.findOne({_id: req.params.id}).
   res.status(200).json({
     status: "success",
     data: {
