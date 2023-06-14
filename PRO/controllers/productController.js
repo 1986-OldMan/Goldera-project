@@ -28,6 +28,16 @@ exports.getAllProducts = async (req , res) => {
   } else {
     query = query.sort('-createdAt');
   }
+
+  // 3. Field limiting
+  //select() is a method of Mongoose that is used to select document fields that are to be returned in the query result. 
+  //It is used to include or exclude document fields that are returned from a Mongoose query.
+  if (req.query.fields) {
+    const fields = req.query.fields.split(',').join(' ');
+    query = query.select(fields);
+  } else {
+    query = query.select('-__v');
+  }
   
   // Execute the Query
   const products = await query
