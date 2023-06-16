@@ -67,7 +67,7 @@ const deleteData = async () => {
     'C:\\USERS\\USER_NAME_PC\\FOLDER_NAME\\LOCATION_PROJECT\\PROJECT_NAME\\pro\\dev-data\\data\\import-dev-data.js' , [1]
 // ]
 
-// and after added a new position in array with write this in terminal dev-data/data/import-dev-data.js --import and in terminal will see this
+// and after added a new position in array with write this in terminal node dev-data/data/import-dev-data.js --import and in terminal will see this
 
 //[
     'C:\\PROGRAM_FILES\\nodejs\\node.exe', [0]
