@@ -1,5 +1,22 @@
 const Product = require('./../models/productModel');
 
+// Middlewares for gold and silver product ---------->
+exports.aliasGoldProduct = (req , res , next) => {
+  req.query.limit = 10 ;
+  req.query.sort = 'alloy';
+  req.query.alloy = 'Gold-Au'
+  req.query.fields = 'name,price,alloy,manufacturer,stock,weight,fineness,images'
+  next()
+}
+
+exports.aliasSilverProduct = (req , res , next) => {
+  req.query.limit = 10 ;
+  req.query.sort = 'alloy';
+  req.query.alloy = 'Silver-Ag'
+  req.query.fields = 'name,price,alloy,manufacturer,stock,weight,fineness,images'
+  next()
+}
+
 exports.getAllProducts = async (req , res) => {
  try{
 
