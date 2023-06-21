@@ -3,6 +3,13 @@ const productController = require('./../controllers/productController');
 
 const router = express.Router();
 
+// Creating routes for gold and silver products
+router.route('/gold-product')
+.get(productController.aliasGoldProduct , productController.getAllProducts);
+
+router.route('/silver-product')
+.get(productController.aliasSilverProduct , productController.getAllProducts);
+
 // Define routes
 router
 .route('/')
@@ -15,7 +22,4 @@ router
 .patch(productController.updateProduct)
 .delete(productController.deleteProduct);
 
-// Creating routes for gold and silver products
-router.route('/gold-product').get(productController.aliasGoldProduct , productController.getAllProducts);
-router.route('/silver-product').get(productController.aliasSilverProduct , productController.getAllProducts);
 module.exports = router;
