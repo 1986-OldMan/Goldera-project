@@ -1,4 +1,5 @@
 const Product = require('./../models/productModel');
+const APIFeatures = require('./../utils/apiFeature');
 
 // Middlewares for gold and silver product ---------->
 exports.aliasGoldProduct = (req , res , next) => {
@@ -7,7 +8,7 @@ exports.aliasGoldProduct = (req , res , next) => {
   req.query.alloy = 'Gold-Au'
   req.query.fields = 'name,price,alloy,manufacturer,stock,weight,fineness,images'
   next()
-}
+};
 
 exports.aliasSilverProduct = (req , res , next) => {
   req.query.limit = 10 ;
@@ -15,60 +16,18 @@ exports.aliasSilverProduct = (req , res , next) => {
   req.query.alloy = 'Silver-Ag'
   req.query.fields = 'name,price,alloy,manufacturer,stock,weight,fineness,images'
   next()
-}
+};
 
 exports.getAllProducts = async (req , res) => {
  try{
 
-  //Build the Query 
-  // 1A. Filtering
-  //The code const queryObj = {...req.query} creates a new object queryObj by copying the properties and values from the req.query object using the object spread syntax.
-  const queryObj = {...req.query}
-  const excludedFields = ['page' , 'sort' , 'limit' , 'fields'] 
-  excludedFields.forEach(el => delete queryObj[el]);
-
-  // 1B. Advanced filtering
-  //In regular expressions, The \b is a word boundary anchor. It matches a position between a word character.
-  //In regular expressions, the /g flag is known as the "global" flag. When it is used, the regular expression pattern is applied globally, meaning it matches all occurrences of the pattern within the input string, rather than just the first occurrence.
-  let queryString = JSON.stringify(queryObj);
-  queryString = queryString.replace(/\b(gte|gt|lte|lt|eq)\b/g , match => `$${match}`);
-
-  // console.log(req.query , JSON.parse(queryString));
-  let query = Product.find(JSON.parse(queryString));
-
-  // 2. Sorting
-  if(req.query.sort) {
-    //using comma to separate(split) the element you want to sorted and after join back with join().
-    const sortBy = req.query.sort.split(',').join(' ')
-    console.log(sortBy);
-    query = query.sort(sortBy);
-  } else {
-    query = query.sort('-createdAt');
-  }
-
-  // 3. Field limiting
-  //select() is a method of Mongoose that is used to select document fields that are to be returned in the query result. 
-  //It is used to include or exclude document fields that are returned from a Mongoose query.
-  if (req.query.fields) {
-    const fields = req.query.fields.split(',').join(' ');
-    query = query.select(fields);
-  } else {
-    query = query.select('-__v');
-  }
-  
-  // 4. Pagination
-   const page = req.query.page * 1 || 1 ;
-   const limit = req.query.limit * 1 || 100 ;
-   const skip = (page - 1) * limit;
-   query = query.skip(skip).limit(limit);
-
-   if (req.query.page) {
-    const numProducts = await Product.countDocuments()
-    if (skip >= numProducts) throw new Error('This page does not exist');
-  }
-
   // Execute the Query
-  const products = await query
+  const features = new APIFeatures(Product.find() , req.query)
+     .filter()
+     .sort()
+     .limitFields()
+     .paginate();
+  const products = await features.query
 
   //Send response 
   res.status(200).json({
