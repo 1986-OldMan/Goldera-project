@@ -10,6 +10,9 @@ router.route('/gold-product')
 router.route('/silver-product')
 .get(productController.aliasSilverProduct , productController.getAllProducts);
 
+//Creating routes for products stats
+router.route('/products-stats').get(productController.getProductsStats)
+
 // Define routes
 router
 .route('/')

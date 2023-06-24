@@ -17,6 +17,7 @@ exports.aliasSilverProduct = (req , res , next) => {
   req.query.fields = 'name,price,alloy,manufacturer,stock,weight,fineness,images'
   next()
 };
+// Middlewares for gold and silver product ---------->
 
 exports.getAllProducts = async (req , res) => {
  try{
@@ -117,6 +118,36 @@ try {
   res.status(400).json({
     status : 'fail' ,
     message: err
-  })
-}
+  });
+ }
+};
+
+exports.getProductsStats = async (req , res) => {
+  try {
+   //Performs aggregation operation using the aggregation pipeline.
+   //The pipeline allows users to process data from a collection or other source with a sequence of stage-based manipulations.
+    const stats = await Product.aggregate([
+      {
+        $group: {
+          _id: '$alloy' ,
+          nameProducts: { $addToSet: '$name'} ,
+          numProducts: { $sum: 1 },
+          minPrice: { $min: '$price'},
+          maxPrice: { $max: '$price'},
+        }
+      }
+    ]);
+    res.status(200).json({
+      status: 'success' ,
+      message: stats
+    });
+    console.log(stats);
+
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail' ,
+      message: err
+    });
+    console.log(err);
+  }
 };
