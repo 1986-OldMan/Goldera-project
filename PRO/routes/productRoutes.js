@@ -11,7 +11,11 @@ router.route('/silver-product')
 .get(productController.aliasSilverProduct , productController.getAllProducts);
 
 //Creating routes for products stats
-router.route('/products-stats').get(productController.getProductsStats)
+router.route('/products-stats').get(productController.getProductsStats);
+
+//Creating routes for product to see next stock
+router.route('/next-stock/:year').get(productController.getNextStock);
+
 
 // Define routes
 router

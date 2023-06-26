@@ -128,6 +128,7 @@ exports.getProductsStats = async (req , res) => {
    //The pipeline allows users to process data from a collection or other source with a sequence of stage-based manipulations.
     const stats = await Product.aggregate([
       {
+        //The $group : stage separates documents into groups according to a "group key". The output is one document for each unique group key.
         $group: {
           _id: '$alloy' ,
           nameProducts: { $addToSet: '$name'} ,
@@ -146,6 +147,62 @@ exports.getProductsStats = async (req , res) => {
   } catch (err) {
     res.status(404).json({
       status: 'fail' ,
+      message: err
+    });
+    console.log(err);
+  }
+};
+
+exports.getNextStock = async (req , res) => {
+  try{
+    const year = req.params.year * 1
+    const nextStock = await Product.aggregate([
+      //$unwind : Deconstructs an array field from the input documents to output a document for each element.
+      //Each output document is the input document with the value of the array field replaced by the element.
+      {
+        $unwind: '$nextStock'
+      },
+      {
+        // $matck : Filters the documents to pass only the documents that match the specified conditions to the next pipeline stage.
+        $match: {
+          nextStock: {
+            $gte: new Date(`${year}-01-01`),
+            $lte: new Date(`${year}-12-31`)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {$month: '$nextStock'},
+          numProducts: { $sum: 1 },
+          products: { $push: '$name' }
+
+        }
+      },
+      {
+        $addFields: {month: '$_id'}
+      },
+      {
+       //Passes along the documents with the requested fields to the next stage in the pipeline.
+       //The specified fields can be existing fields from the input documents or newly computed fields.
+        $project: {
+          _id: 0
+        }
+      },
+      {
+        $sort: { month: 1 } 
+      },
+    ]);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        nextStock
+      }
+    });
+    console.log(nextStock);
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
       message: err
     });
     console.log(err);
