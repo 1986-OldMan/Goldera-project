@@ -56,7 +56,12 @@ const productSchema = new mongoose.Schema({
 
     stock: {
         type: Schema.Types.Mixed ,
-        required:[true , 'A product must have stock']
+        required: [true , 'A product must have stock']
+    },
+
+    nextStock: {
+        type: [Date] ,
+        require: [true , 'Require next stock for products']
     },
 
     images: [String],
