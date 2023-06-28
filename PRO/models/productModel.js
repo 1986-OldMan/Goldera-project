@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 const {Schema} = mongoose;
 
 //Create a schema for products
@@ -69,10 +70,24 @@ const productSchema = new mongoose.Schema({
     createdAt: {
         type: Date ,
         default: Date.now(),
-        select: false
+        // select: false
     },
 
+} , {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 });
+
+// Virtual property in schema
+// Created function for delivery date who put order in that day + day for delivery
+productSchema.virtual('deliveryDate').get(function() {
+    const orderDate = new Date(this.createdAt);
+    const deliveryDate = new Date(orderDate.getTime() + (3 * 24 * 60 * 60 * 1000));
+    return deliveryDate;
+});
+
+  
+  
 
 //Creating documents and testing the model(Schema)
 const Product = mongoose.model('Product' , productSchema);
