@@ -19,6 +19,8 @@ const productSchema = new mongoose.Schema({
         trim: true
     },
 
+    slug: String ,
+
     price: {
         type: Number ,
         required: [true , 'A product must have a name']
@@ -79,15 +81,19 @@ const productSchema = new mongoose.Schema({
 });
 
 // Virtual property in schema
-// Created function for delivery date who put order in that day + day for delivery
+// Created function for delivery date who put order in that day + day for delivery in this case 3 days
 productSchema.virtual('deliveryDate').get(function() {
     const orderDate = new Date(this.createdAt);
     const deliveryDate = new Date(orderDate.getTime() + (3 * 24 * 60 * 60 * 1000));
     return deliveryDate;
 });
 
-  
-  
+//DOCUMENT MIDDLEWARE: runs before the save [ .save() ] command or create [ .create() ] command
+//NOT WORK WITH .insertmany() , updateMany() , .findById() , .findByIdAndUpdate() , .findOne()
+productSchema.pre('save' , function(next) {
+    this.slug = slugify(this.name , { lower: true });
+    next();
+});
 
 //Creating documents and testing the model(Schema)
 const Product = mongoose.model('Product' , productSchema);
