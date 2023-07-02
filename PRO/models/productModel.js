@@ -75,6 +75,11 @@ const productSchema = new mongoose.Schema({
         // select: false
     },
 
+    rareProduct: {
+        type: Boolean,
+        default: false
+    }
+
 } , {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
@@ -92,6 +97,21 @@ productSchema.virtual('deliveryDate').get(function() {
 //NOT WORK WITH .insertmany() , updateMany() , .findById() , .findByIdAndUpdate() , .findOne()
 productSchema.pre('save' , function(next) {
     this.slug = slugify(this.name , { lower: true });
+    next();
+});
+
+//QUERY MIDDLEWARE
+//product.Schema.pre('find' , function(next) {
+// /^find/: is used to match any query operation that starts with 'find'
+productSchema.pre(/^find/ , function(next) {
+    this.find({ rareProduct: { $ne: true} });
+    this.start = Date.now();
+    next();
+});
+
+productSchema.post(/^find/ , function(docs , next) {
+    console.log(`Query took ${Date.now() - this.start} ms`);
+    console.log(docs);
     next();
 });
 
