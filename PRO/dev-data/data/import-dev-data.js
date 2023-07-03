@@ -1,4 +1,7 @@
-//------>IMPORTANT, THIS JS FILE IS ONLY FOR IMPORT/DELETE DATA FROM DB(DATABASE), FROM YOUR JSON FILE WITHIN THE PROJECT!<------
+/**
+    * @author Alexandru Ivanescu <ivanescu.alexandru01@gmail.com>
+    * IMPORTANT, THIS JS FILE IS ONLY FOR IMPORT/DELETE DATA FROM DB(DATABASE), FROM YOUR JSON FILE WITHIN THE PROJECT!
+*/
 const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -37,8 +40,10 @@ const importData = async() => {
     } catch (err) {
         console.log(err);
     }
-    // The process.exit() function is a method in Node.js that terminates the current process and exits the program. 
-    //When called, it immediately stops the execution of the program and returns the control back to the operating system.
+    /**
+     * The process.exit() function is a method in Node.js that terminates the current process and exits the program. 
+     * When called, it immediately stops the execution of the program and returns the control back to the operating system.
+   */
     process.exit();
 };
 
@@ -55,32 +60,35 @@ const deleteData = async () => {
 
 // First write this in code console.log(process.argv);
    console.log(process.argv);
+/**
+   * process. argv is a property that holds an array of command-line values provided when the current process was initiated.
+   * The first element in the array is the absolute path to the Node, 
+   * followed by the path to the file that's running and finally any command-line arguments provided when the process was initiated.
 
-// process. argv is a property that holds an array of command-line values provided when the current process was initiated.
-// The first element in the array is the absolute path to the Node, 
-// followed by the path to the file that's running and finally any command-line arguments provided when the process was initiated.
-
-// After to see in terminal the proccess of argv in array, write node dev-data/data/import-dev-data.js,
-// after in terminal will see this : 
-// [
+   * After to see in terminal the proccess of argv in array, write node dev-data/data/import-dev-data.js,
+   * [0] , [1] , [2] : position or each element in array.
+   * After in terminal will see this : 
+   [
     'C:\\PROGRAM_FILES\\nodejs\\node.exe' , [0]
     'C:\\USERS\\USER_NAME_PC\\FOLDER_NAME\\LOCATION_PROJECT\\PROJECT_NAME\\pro\\dev-data\\data\\import-dev-data.js' , [1]
-// ]
+   ]
 
-// and after added a new position in array with write this in terminal: node dev-data/data/import-dev-data.js --import and in terminal will see this
+   * and added a new position in array with write this in terminal: node dev-data/data/import-dev-data.js --import and in terminal will see this
 
-//[
+  [
     'C:\\PROGRAM_FILES\\nodejs\\node.exe', [0]
     'C:\\USERS\\USER_NAME_PC\\FOLDER_NAME\\LOCATION_PROJECT\\PROJECT_NAME\\pro\\dev-data\\data\\import-dev-data.js' , [1]
     '--import' , [2]
-// ]
+   ]
+*/
 
 if (process.argv[2] === '--import') {
     importData();
 } else if (process.argv[2] === '--delete') {
     deleteData();
 }
-
-// after that two types of commands will be used in the terminal :
-// node dev-data/data/import-dev-data.js --delete = to delete data from DB
-// node dev-data/data/import-dev-data.js --import = to import data into DB
+/**
+  * After that two types of commands will be used in the terminal :
+  * node dev-data/data/import-dev-data.js --delete = to delete data from DB   
+  * node dev-data/data/import-dev-data.js --import = to import data into DB
+*/
