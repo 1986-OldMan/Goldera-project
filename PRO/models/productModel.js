@@ -2,9 +2,14 @@ const mongoose = require('mongoose');
 const slugify = require('slugify');
 const {Schema} = mongoose;
 
-//Create a schema for products
+/**
+    * @author Alexandru Ivanescu <ivanescu.alexandru01@gmail.com>
+    * Create schema for products using mongoose and mondodb.
+    * Type: Schema.Types.Mixed - it's to used in schema number or string in the same place.
+    * The enum validator is an array that will check if the value given is an item in the array.
+    * The trim in white spaces will be removed from both sides of the string.
+*/
 
-//type: Schema.Types.Mixed = it's for to have a number or string.
 const productSchema = new mongoose.Schema({
 
     idProduct: {
@@ -16,7 +21,9 @@ const productSchema = new mongoose.Schema({
         type: String ,
         required: [true , 'A product must have a name'] ,
         unique: true,
-        trim: true
+        trim: true,
+        maxLength: [50 , 'A product must have less or equal then 40 characters'],
+        minLenght: [10 , 'A product must have more or equal then 10 characters']
     },
 
     slug: String ,
@@ -39,7 +46,11 @@ const productSchema = new mongoose.Schema({
 
     alloy: {
         type: String ,
-        required:[true , 'A product must have type of alloy']
+        required:[true , 'A product must have type of alloy'],
+        enum: {
+            values: ['Gold-Au' , 'Silver-Ag' , 'Platinum-Pt'],
+            message: 'You can only choose between Gold-Au, Silver-Ag and Platinum-Pt'
+        }
     },
 
     weight: {
@@ -72,7 +83,7 @@ const productSchema = new mongoose.Schema({
     createdAt: {
         type: Date ,
         default: Date.now(),
-        // select: false
+        select: false
     },
 
     rareProduct: {
@@ -85,24 +96,30 @@ const productSchema = new mongoose.Schema({
     toObject: { virtuals: true }
 });
 
-// Virtual property in schema
-// Created function for delivery date who put order in that day + day for delivery in this case 3 days
-productSchema.virtual('deliveryDate').get(function() {
-    const orderDate = new Date(this.createdAt);
-    const deliveryDate = new Date(orderDate.getTime() + (3 * 24 * 60 * 60 * 1000));
-    return deliveryDate;
+/**
+  * Virtual property in schema
+  * Created function for sell customers back to us the product.    
+*/
+productSchema.virtual('SellPrice').get(function() {
+    const price = this.price
+    const sellPrice = price - (price * 0.06);
+    return sellPrice;
 });
 
-//DOCUMENT MIDDLEWARE: runs before the save [ .save() ] command or create [ .create() ] command
-//NOT WORK WITH .insertmany() , updateMany() , .findById() , .findByIdAndUpdate() , .findOne()
+/**
+  *DOCUMENT MIDDLEWARE: runs before the save [ .save() ] command or create [ .create() ] command
+  *NOT WORK WITH .insertmany() , updateMany() , .findById() , .findByIdAndUpdate() , .findOne()
+*/
 productSchema.pre('save' , function(next) {
     this.slug = slugify(this.name , { lower: true });
     next();
 });
 
-//QUERY MIDDLEWARE
-//product.Schema.pre('find' , function(next) {
-// /^find/: is used to match any query operation that starts with 'find'
+/**
+  *QUERY MIDDLEWARE
+  *product.Schema.pre('find' , function(next) {
+  * /^find/: is used to match any query operation that starts with 'find'
+*/
 productSchema.pre(/^find/ , function(next) {
     this.find({ rareProduct: { $ne: true} });
     this.start = Date.now();
@@ -115,7 +132,18 @@ productSchema.post(/^find/ , function(docs , next) {
     next();
 });
 
-//Creating documents and testing the model(Schema)
+/**
+  *AGGREGATION MIDDLEWARE
+*/
+productSchema.pre('aggregate' , function(next) {
+    this.pipeline().unshift({ $match: { rareProduct: { $ne: true } } });
+    console.log(this.pipeline());
+    next();
+});
+
+/**
+  *Creating documents and testing the model(Schema)
+*/
 const Product = mongoose.model('Product' , productSchema);
 
 module.exports = Product;
