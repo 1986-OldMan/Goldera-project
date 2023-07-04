@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const validator = require('validator');
+
 const {Schema} = mongoose;
 
 /**
@@ -23,7 +25,7 @@ const productSchema = new mongoose.Schema({
         unique: true,
         trim: true,
         maxLength: [50 , 'A product must have less or equal then 40 characters'],
-        minLenght: [10 , 'A product must have more or equal then 10 characters']
+        minLenght: [10 , 'A product must have more or equal then 10 characters'],
     },
 
     slug: String ,
@@ -41,7 +43,8 @@ const productSchema = new mongoose.Schema({
     
     manufacturer: {
         type: String ,
-        required: [true , 'A product must have a manufacturer']
+        required: [true , 'A product must have a manufacturer'],
+        trim: true
     },
 
     alloy: {
