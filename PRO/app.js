@@ -23,4 +23,17 @@ app.use((req, res, next) => {
 app.use('/api/v1/products' , productRouter);
 app.use('/api/v1/users' , userRouter);
 
+/**
+   * Middleware for the routes is not define.
+   * .all is used to all HTTP methods (get , post , patch , delete and continue).
+   * the '*' it's used for the all URL's is catch
+ */
+app.all('*' , (req , res , next) => {
+  res.status(404).json({
+    status: 'fail' ,
+    message: `Can't find ${req.originalUrl} on the server!`
+  })
+  next();
+});
+
 module.exports = app;
