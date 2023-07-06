@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon server.js",
-    "start:prod": "NODE_ENV=production nodemon server.js"
+    "start:prod": "NODE_ENV=production nodemon server.js",
+    "debug": "ndb server.js"
   },
   "author": "Alexandru Ivanescu",
   "license": "ISC",
@@ -21,7 +22,9 @@
     "moment": "^2.29.4",
     "mongoose": "^7.3.1",
     "morgan": "^1.10.0",
+    "ndb": "^1.1.5",
     "nodemon": "^2.0.22",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "validator": "^13.9.0"
   }
 }
