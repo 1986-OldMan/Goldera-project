@@ -1,6 +1,8 @@
 const express = require("express");
 const morgan = require('morgan');
 
+const AppError = require('./utils/appError');
+const globalErrorHandler = require('./controllers/errorController');
 const productRouter = require('./routes/productRoutes');
 const userRouter = require('./routes/userRoutes');
 
@@ -30,30 +32,25 @@ app.use('/api/v1/users' , userRouter);
    * Creates a new Error object and sets the error.message property to the provided text message.
  */
 app.all('*' , (req , res , next) => {
+
+  // 1) First build:
   // res.status(404).json({
   //   status: 'fail' ,
   //   message: `Can't find ${req.originalUrl} on the server!`
   // })
 
-  const err = new Error(`Can't find ${req.originalUrl} on the server!`);
-  err.status = 'fail';
-  err.statusCode = 404;
+  // 2) Second build:
+  // const err = new Error(`Can't find ${req.originalUrl} on the server!`);
+  // err.status = 'fail';
+  // err.statusCode = 404;
 
-  next(err);
+  // 3) Third build:
+  next(new AppError(`Can't find ${req.originalUrl} on the server!` , 404));
 });
 
 /**
  * Implementing better global Middleware for error handling.
 */
-
-app.use((err , req , res , next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'fail'
-
-  res.status(err.statusCode).json({
-    status: err.status ,
-    message: err.message
-  });
-});
+app.use(globalErrorHandler);
 
 module.exports = app;
