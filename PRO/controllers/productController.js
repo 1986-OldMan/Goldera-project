@@ -1,5 +1,6 @@
 const Product = require('./../models/productModel');
 const APIFeatures = require('./../utils/apiFeature');
+const catchAsync = require('./../utils/catchAsync');
 
 // Middlewares for gold and silver product ---------->
 exports.aliasGoldProduct = (req , res , next) => {
@@ -19,9 +20,7 @@ exports.aliasSilverProduct = (req , res , next) => {
 };
 // Middlewares for gold and silver product ---------->
 
-exports.getAllProducts = async (req , res) => {
- try{
-
+exports.getAllProducts = catchAsync(async (req , res , next) => {
   // Execute the Query
   const features = new APIFeatures(Product.find() , req.query)
      .filter()
@@ -38,35 +37,20 @@ exports.getAllProducts = async (req , res) => {
       products
     }
   });
- } catch (err) {
-   res.status(404).json({
-    status: 'fail' ,
-    message: err
-  });
- }
-};
+});
 
-exports.getProduct = async (req , res) => {
- try {
+exports.getProduct = catchAsync(async (req , res , next) => {
   const product = await Product.findById(req.params.id);
   // For MongoDB and line of code wrote above have reference for the id of product in database: Product.findOne({_id: req.params.id}).
   res.status(200).json({
     status: "success",
     data: {
       product,
-    },
+    }
   });
- } catch (err) {
-   res.status(404).json({
-    status: 'fail' ,
-    message: err
-  });
- }
-};
+});
 
-//create new product in other way and using async ,try and catch.
-exports.createProduct = async (req , res) => {
-  try{
+exports.createProduct = catchAsync(async (req , res , next) => {
     const newProduct = await Product.create(req.body);
     //The HTTP 201 Created success status response code indicates that the request has succeeded and has led to the creation of a resource.
     res.status(201).json({
@@ -75,16 +59,9 @@ exports.createProduct = async (req , res) => {
       product: newProduct,
     }
   });
- } catch (err) {
-  res.status(400).json({
-    status: 'fail' , 
-    message: err
-  });
- }
-};
+});
 
-exports.updateProduct = async (req , res) => {
- try {
+exports.updateProduct = catchAsync(async (req , res , next) => {
   const product = await Product.findByIdAndUpdate(req.params.id , req.body , {
     new: true ,
     //if true, runs update validators on this command. Update validators validate the update operation against the model's schema
@@ -97,38 +74,26 @@ exports.updateProduct = async (req , res) => {
       product
     },
   });
- } catch (err) {
-  res.status(400).json({
-  status: 'fail' ,
-  message: err
-  });
- }
-};
+});
 
-exports.deleteProduct = async (req , res) => {
-try {
+exports.deleteProduct = catchAsync(async (req , res , next) => {
   await Product.findByIdAndDelete(req.params.id);
-  
   //The HTTP 204 No Content success status response code indicates that a request has succeeded, but that the client doesn't need to navigate away from its current page
   res.status(204).json({
     status: "success",
     data: null,
   });
-} catch (err) {
-  res.status(400).json({
-    status : 'fail' ,
-    message: err
-  });
- }
-};
+});
 
-exports.getProductsStats = async (req , res) => {
-  try {
-   //Performs aggregation operation using the aggregation pipeline.
-   //The pipeline allows users to process data from a collection or other source with a sequence of stage-based manipulations.
+
+/**
+ * Performs aggregation operation using the aggregation pipeline.
+ * The pipeline allows users to process data from a collection or other source with a sequence of stage-based manipulatio
+ * The $group : stage separates documents into groups according to a "group key". The output is one document for each unique group key.
+*/
+exports.getProductsStats = catchAsync(async (req , res , next) => {
     const stats = await Product.aggregate([
       {
-        //The $group : stage separates documents into groups according to a "group key". The output is one document for each unique group key.
         $group: {
           _id: '$alloy' ,
           nameProducts: { $addToSet: '$name'} ,
@@ -143,27 +108,20 @@ exports.getProductsStats = async (req , res) => {
       message: stats
     });
     console.log(stats);
+});
 
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail' ,
-      message: err
-    });
-    console.log(err);
-  }
-};
-
-exports.getNextStock = async (req , res) => {
-  try{
+/**
+ * $unwind : Deconstructs an array field from the input documents to output a document for each element.
+ * Each output document is the input document with the value of the array field replaced by the elemeny.
+ * $matck : Filters the documents to pass only the documents that match the specified conditions to the next pipeline stage.
+*/
+exports.getNextStock = catchAsync(async (req , res , next) => {
     const year = req.params.year * 1
     const nextStock = await Product.aggregate([
-      //$unwind : Deconstructs an array field from the input documents to output a document for each element.
-      //Each output document is the input document with the value of the array field replaced by the element.
       {
         $unwind: '$nextStock'
       },
       {
-        // $matck : Filters the documents to pass only the documents that match the specified conditions to the next pipeline stage.
         $match: {
           nextStock: {
             $gte: new Date(`${year}-01-01`),
@@ -176,7 +134,6 @@ exports.getNextStock = async (req , res) => {
           _id: {$month: '$nextStock'},
           numProducts: { $sum: 1 },
           products: { $push: '$name' }
-
         }
       },
       {
@@ -200,11 +157,4 @@ exports.getNextStock = async (req , res) => {
       }
     });
     console.log(nextStock);
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err
-    });
-    console.log(err);
-  }
-};
+});
