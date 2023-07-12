@@ -1,6 +1,7 @@
 const Product = require('./../models/productModel');
 const APIFeatures = require('./../utils/apiFeature');
 const catchAsync = require('./../utils/catchAsync');
+const AppError = require('./../utils/appError');
 
 // Middlewares for gold and silver product ---------->
 exports.aliasGoldProduct = (req , res , next) => {
@@ -42,6 +43,11 @@ exports.getAllProducts = catchAsync(async (req , res , next) => {
 exports.getProduct = catchAsync(async (req , res , next) => {
   const product = await Product.findById(req.params.id);
   // For MongoDB and line of code wrote above have reference for the id of product in database: Product.findOne({_id: req.params.id}).
+
+  if (!product) {
+    return next(new AppError('No product found with that ID' , 404));
+  };
+
   res.status(200).json({
     status: "success",
     data: {
@@ -66,7 +72,12 @@ exports.updateProduct = catchAsync(async (req , res , next) => {
     new: true ,
     //if true, runs update validators on this command. Update validators validate the update operation against the model's schema
     runValidators: true
-  })
+  });
+
+  if (!product) {
+    return next(new AppError('No product found with that ID' , 404));
+  };
+
   res.status(200).json({
     requestedAt: req.requestTime,
     status: "success",
@@ -77,8 +88,13 @@ exports.updateProduct = catchAsync(async (req , res , next) => {
 });
 
 exports.deleteProduct = catchAsync(async (req , res , next) => {
-  await Product.findByIdAndDelete(req.params.id);
-  //The HTTP 204 No Content success status response code indicates that a request has succeeded, but that the client doesn't need to navigate away from its current page
+ const product = await Product.findByIdAndDelete(req.params.id);
+ 
+ if (!product) {
+   return next(new AppError('No product found with that ID' , 404));
+  };
+
+  //The HTTP 204 No Content success status response code indicates that a request has succeeded, but that the client doesn't need to navigate away from its current page.
   res.status(204).json({
     status: "success",
     data: null,
