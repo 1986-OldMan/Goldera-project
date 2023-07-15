@@ -20,9 +20,10 @@ mongoose.connect(DB , {
     useUnifiedTopology: true
     
 }).then(() => {console.log('DB connection successful!')
+  if(process.env.NODE_ENV === 'development') {
  const endTime = new Date(); // Record the end time
  const connectionTime = endTime - startTime; // Calculate the time difference
- console.log(`Time taken to connect DB: ${connectionTime} ms`)});
+ console.log(`Time taken to connect DB: ${connectionTime} ms`)}});
 
 const port = process.env.PORT || 8000;
 app.listen(port , () => {
