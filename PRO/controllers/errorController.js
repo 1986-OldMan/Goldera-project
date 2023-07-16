@@ -7,6 +7,10 @@
  * in sendErrorProd = in case error is operational you recived error code and error detail.
  *                  = in case error is not operation you recived error 500 and generic message.
  *                  = for more detail go to section appError.js in folder utils (PRO/utils/appError.js).
+ * handleCastErrorDB = received specific error in case used other id.
+ * handleDuplicateFieldsDB = received specific error in case create new product with post method with the same name(error 11000 is for mongodb for duclicate fields).
+ *                         = (/(["'])(\\?.)*?\1/) -> regular expression match text between quotes.
+ * 
 */
 
 const AppError = require('./../utils/appError');
@@ -15,6 +19,14 @@ const handleCastErrorDB = err => {
   const message = `Invalid ${err.path}: ${err.value}.`;
   return new AppError(message , 400);
 };
+
+const handleDuplicateFieldsDB = err => {
+  const value = err.errmsg.match((/(["'])(\\?.)*?\1/));
+  console.log(value);
+  
+  const message = `Duplicate filed value: ${value}. Please use other value.`
+  return new AppError(message , 400);
+}
 
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
@@ -57,6 +69,7 @@ module.exports = (err, req, res, next) => {
   } else if (process.env.NODE_ENV === 'production') {
     let error = err;
     if (error.name === 'CastError') error = handleCastErrorDB(error);
+    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     sendErrorProd(error, res);
     
     console.log(error);
