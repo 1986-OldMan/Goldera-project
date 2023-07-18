@@ -11,7 +11,7 @@
  * handleCastErrorDB = received specific error in case used other id.
  * handleDuplicateFieldsDB = received specific error in case create new product with post method with the same name(error 11000 is for mongodb for duclicate fields).
  *                         = (/(["'])(\\?.)*?\1/) -> regular expression match text between quotes.
- * handleValidationErrorDB = an error is received when you update the product with other parameters than those specified in the moongose scheme(PRO/models/productModel.js).
+ * handleValidationErrorDB = an error is received when you update the product with other parameters than those specified in the mongoose scheme(PRO/models/productModel.js).
  *                         = And to make it an order, join with point and a free space were used after each wrong parameter. 
  *                         = The map() method creates a new array populated with the results of calling a provided function on every element in the calling.
 */
