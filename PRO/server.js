@@ -1,5 +1,21 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+
+/**
+  * Error Handling: Uncaught Exception
+  * This event listener captures uncaught exceptions that occur during the execution of the Node.js application.
+  * When an uncaught exception is encountered, the event listener logs a message indicating the occurrence of an uncaught exception
+    * and outputs the error details (name and message) to the console for diagnostic purposes.
+  * The Node.js process is then exited with an exit code of 1, indicating an abnormal termination due to the uncaught exception.
+  *Additionally, consider using a crash reporting service to collect and analyze uncaught exceptions in production environments.
+*/
+
+process.on('uncaughtException' , err => {
+  console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
+  console.log(err.name , err.message);
+  process.exit(1)
+});
+
 dotenv.config({
     path: './config.env'
 });
@@ -30,6 +46,15 @@ const port = process.env.PORT || 8000;
 const server = app.listen(port , () => {
     console.log(`App running on port ${port} 🗄️....`);
 });
+
+/**
+  * Error Handling: Unhandled Rejection
+  * This event listener captures unhandled promise rejections that may occur during database operations.
+  * When an unhandled rejection happens, the event listener logs the error details (name and message) to the console,
+    * outputs a message indicating the occurrence of an unhandled rejection, and gracefully shuts down the server (if running).
+  * The Node.js process is then exited with an exit code of 1, indicating an abnormal termination due to the unhandled rejection.
+  * Properly handling promise rejections at the source of the issue is recommended to prevent unhandled rejections.
+*/
 
 process.on('unhandledRejection' , err => {
   console.log(err.name , err.message);
