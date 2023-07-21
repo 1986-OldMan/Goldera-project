@@ -6,7 +6,7 @@ const {Schema} = mongoose;
 
 /**
     * @author Alexandru Ivanescu <ivanescu.alexandru01@gmail.com>
-    * Create schema for products using mongoose and mondodb.
+    * Create schema for products using mongoose and mongodb.
     * Type: Schema.Types.Mixed - it's to used in schema number or string in the same place.
     * The enum validator is an array that will check if the value given is an item in the array.
     * The trim in white spaces will be removed from both sides of the string.
