@@ -7,17 +7,17 @@ const AppError = require('./../utils/appError');
 exports.aliasGoldProduct = (req , res , next) => {
   req.query.limit = 10 ;
   req.query.sort = 'alloy';
-  req.query.alloy = 'Gold-Au'
-  req.query.fields = 'name,price,alloy,manufacturer,stock,weight,fineness,images'
-  next()
+  req.query.alloy = 'Gold-Au';
+  req.query.fields = 'name,price,alloy,manufacturer,stock,weight,fineness,images';
+  next();
 };
 
 exports.aliasSilverProduct = (req , res , next) => {
   req.query.limit = 10 ;
   req.query.sort = 'alloy';
-  req.query.alloy = 'Silver-Ag'
-  req.query.fields = 'name,price,alloy,manufacturer,stock,weight,fineness,images'
-  next()
+  req.query.alloy = 'Silver-Ag';
+  req.query.fields = 'name,price,alloy,manufacturer,stock,weight,fineness,images';
+  next();
 };
 // Middlewares for gold and silver product ---------->
 
