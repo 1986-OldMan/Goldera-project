@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 const {Schema} = mongoose;
 
 /**
@@ -34,10 +35,33 @@ const userSchema = new mongoose.Schema({
 
     passwordConfirm: {
         type: Schema.Types.Mixed ,
-        required: [true , 'Field password confirmation is required']
-
+        required: [true , 'Field password confirmation is required'],
+        validate: {
+            //This only work on CREATE and SAVE!
+            validator: function(el) {
+                return el === this.password ;
+            },
+            message: 'Field password and password confirmation are not the same!'
+        }
     },
 });
+
+/**
+    * This is mongoose middleware with pre save middleware , basically document middleware 
+    * Only run this function if password was actually modified!
+    * Hash the password with cost of 13
+    * The number "13" represents the cost factor used by the bcrypt hashing algorithm.
+    * It specifies the number of rounds the algorithm will perform during the password hashing process.
+    * Delete passwordConfirm field after hash the password
+*/
+userSchema.pre('save' , async function(next) {
+    if(!this.isModified('password')) return next();
+
+    this.password = await bcrypt.hash(this.password , 13);
+
+    this.passwordConfirm = undefined;
+});
+
 const User = mongoose.model('User' , userSchema);
 
 module.exports = User;
