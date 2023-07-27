@@ -6,6 +6,7 @@ const router = express.Router();
 
 //route define for user to sign up
 router.post('/signup' , authController.signup);
+router.post('/login' , authController.login);
 
 // Define routes
 router

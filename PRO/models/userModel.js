@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+
 const {Schema} = mongoose;
 
 /**
@@ -30,7 +31,8 @@ const userSchema = new mongoose.Schema({
     password: {
         type: Schema.Types.Mixed ,
         required: [true , 'Filed Password is required'],
-        minlength: 8
+        minlength: 8,
+        select: false
     },
 
     passwordConfirm: {
@@ -61,6 +63,18 @@ userSchema.pre('save' , async function(next) {
 
     this.passwordConfirm = undefined;
 });
+
+/**
+    * Define a method called 'correctPassword' on the userSchema to securely compare passwords.
+    * This method is used to check if a given 'candidatePassword' matches the hashed 'userPassword'
+    * Use bcrypt.compare to securely compare the provided candidatePassword.
+    *  with the hashed userPassword stored in the database.
+    *  bcrypt.compare returns a Promise, so we use 'await' to wait for the result.
+*/
+
+userSchema.methods.correctPassword = async function(candidatePassword , userPassword) {
+    return await bcrypt.compare(candidatePassword , userPassword);
+};
 
 const User = mongoose.model('User' , userSchema);
 
