@@ -65,3 +65,32 @@ exports.login = catchAsync(async (req , res , next) => {
         token 
     });
 });
+
+/**
+  * Middleware for protect the router for all product.
+  * It's necessary to log in to see the product
+  * Sending Authorization Bearer Token Header. To send a request with the Bearer Token authorization header.
+  * you need to make an HTTP request and provide your Bearer Token in the "Authorization: Bearer {token}" HTTP header.
+  * Authentication Header verifies origin of data and also payload to confirm if there has been modification done in between, during transmission between source and destination. 
+  * How to test to see if protect middleware work , using postman in Headers you have KEY and VALUE.
+  * In key introduce Authorization and in Value introduce Bearer and token.
+ 
+*/
+exports.protect = catchAsync(async (req , res , next) => {
+    // 1) Getting the coken and check of it;s there.
+    let token;
+    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+       token = req.headers.authorization.split(' ')[1];
+    }
+    console.log(token);
+
+    if(!token) {
+        return next(new AppError('You are not logged in! Please log in yo get access.' , 401));
+    }
+    // 2) Verification token.
+
+    // 3) Check if user still exists.
+
+    // 4) Check if user change password after the jwt token was issued.
+    next()
+});
