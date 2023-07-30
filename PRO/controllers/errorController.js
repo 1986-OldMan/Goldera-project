@@ -14,6 +14,8 @@
  * handleValidationErrorDB = an error is received when you update the product with other parameters than those specified in the mongoose scheme(PRO/models/productModel.js).
  *                         = And to make it an order, join with point and a free space were used after each wrong parameter. 
  *                         = The map() method creates a new array populated with the results of calling a provided function on every element in the calling.
+ * handleJWTError = an error is received when token is invalid.
+ * handleJWTExpiredError = an error is received when token is expired.
 */
 
 const AppError = require('./../utils/appError');
@@ -37,6 +39,10 @@ const handleValidationErrorDB = err => {
   const message = `Invalid imput data. ${errors.join('. ')}`;
   return new AppError(message , 400);
 };
+
+const handleJWTError = () => new AppError('Invalid token. Please log in again!' , 401);
+
+const handleJWTExpiredError = () => new AppError('Your token has expired! Please log in again.' , 401);
 
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
@@ -81,7 +87,9 @@ module.exports = (err, req, res, next) => {
 
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-    if (error.name === 'ValidationError') error = handleValidationErrorDB(error)
+    if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
+    if (error.name === 'JsonWebTokenError') error = handleJWTError();
+    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
     sendErrorProd(error, res);
     
     console.log(error);
