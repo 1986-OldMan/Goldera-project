@@ -75,7 +75,11 @@ exports.login = catchAsync(async (req , res , next) => {
   * Authentication Header verifies origin of data and also payload to confirm if there has been modification done in between, during transmission between source and destination. 
   * How to test to see if protect middleware work , using postman in Headers you have KEY and VALUE.
   * In key introduce Authorization and in Value introduce Bearer and token.
- 
+  * const { promisify } : ->
+  * -> Import the 'promisify' function from Node.js's built-in 'util' module.
+  * -> Destructuring Assignment: Extract the 'promisify' function from the 'util' module.
+  * -> The 'promisify' function helps convert traditional callback-style functions into Promise-based functions.
+  * -> jwt.verify is a function commonly used in the context of JSON Web Tokens (JWT) to verify the authenticity and integrity of a token.
 */
 exports.protect = catchAsync(async (req , res , next) => {
     // 1) Getting the token and check of it's there.
@@ -89,9 +93,13 @@ exports.protect = catchAsync(async (req , res , next) => {
         return next(new AppError('You are not logged in! Please log in to get access.' , 401));
     }
     // 2) Verification token.
-    const decode = await promisify(jwt.verify)(token , process.env.JWT_SECRET);
+    const decoded = await promisify(jwt.verify)(token , process.env.JWT_SECRET);
 
     // 3) Check if user still exists.
+    const freshUser = await User.findById(decoded.id);
+    if (!freshUser) {
+        return next(new AppError("The user assigned to this token does no longer exist" , 401));
+    }
 
     // 4) Check if user change password after the jwt token was issued.
     next()
