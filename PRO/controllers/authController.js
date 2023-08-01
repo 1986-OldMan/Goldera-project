@@ -1,5 +1,5 @@
 /**
-    * authController it's for create new user with route Sign Up and post methode.
+    * authController it's for create new user with route Sign Up , Log in and post methode.
     * catchAsync for catch error in care something is wrong.
     * For more information about catchAsync , have section in PRO/utils/catchAsync.js.
     * JWT, or JSON Web Token, is an open standard used to share security information between two parties — a client and a server.
@@ -80,6 +80,9 @@ exports.login = catchAsync(async (req , res , next) => {
   * -> Destructuring Assignment: Extract the 'promisify' function from the 'util' module.
   * -> The 'promisify' function helps convert traditional callback-style functions into Promise-based functions.
   * -> jwt.verify is a function commonly used in the context of JSON Web Tokens (JWT) to verify the authenticity and integrity of a token.
+  * 
+  * decoded.iat: This is the "issued at" timestamp extracted from the decoded JWT payload. It represents the time when the JWT was issued.
+  * 
 */
 exports.protect = catchAsync(async (req , res , next) => {
     // 1) Getting the token and check of it's there.
@@ -92,15 +95,22 @@ exports.protect = catchAsync(async (req , res , next) => {
     if(!token) {
         return next(new AppError('You are not logged in! Please log in to get access.' , 401));
     }
+    
     // 2) Verification token.
     const decoded = await promisify(jwt.verify)(token , process.env.JWT_SECRET);
 
     // 3) Check if user still exists.
-    const freshUser = await User.findById(decoded.id);
-    if (!freshUser) {
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) {
         return next(new AppError("The user assigned to this token does no longer exist" , 401));
     }
 
     // 4) Check if user change password after the jwt token was issued.
+    if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next(new AppError('User recently changed password! Please log in again.', 401));
+      }
+
+   // GRAND ACCESS TO PROTECTED ROUTE.
+   req.user = currentUser;
     next()
 });
