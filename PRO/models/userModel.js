@@ -28,6 +28,12 @@ const userSchema = new mongoose.Schema({
 
     photo: String ,
 
+    role: {
+        type: String ,
+        enum: ['user' , 'seller' , 'supervisor' , 'admin'],
+        default: 'user',
+      },
+
     password: {
         type: Schema.Types.Mixed ,
         required: [true , 'Filed Password is required'],

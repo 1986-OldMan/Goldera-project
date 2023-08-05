@@ -5,6 +5,7 @@
     * JWT, or JSON Web Token, is an open standard used to share security information between two parties — a client and a server.
     * Each JWT contains encoded JSON objects, including a set of claims
     * jwt.sing it's for new user and referance is _id from mongodb.
+    * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 */
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
@@ -21,7 +22,8 @@ exports.signup = catchAsync(async (req , res , next) => {
         name: req.body.name ,
         email: req.body.email ,
         password: req.body.password ,
-        passwordConfirm: req.body.passwordConfirm
+        passwordConfirm: req.body.passwordConfirm ,
+        role: req.body.role
     });
 
     const token = signToken(newUser._id);
@@ -42,6 +44,7 @@ exports.signup = catchAsync(async (req , res , next) => {
   * 2) Find the user based on the provided email and include the 'password' field for comparison
   * 2) If user not found or the provided password is incorrect, send a 401 error (Unauthorized).
   * 3) Generate a token for the user's ID using the 'signToken' function.
+  * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 */
 
 exports.login = catchAsync(async (req , res , next) => {
@@ -82,7 +85,7 @@ exports.login = catchAsync(async (req , res , next) => {
   * -> jwt.verify is a function commonly used in the context of JSON Web Tokens (JWT) to verify the authenticity and integrity of a token.
   * 
   * decoded.iat: This is the "issued at" timestamp extracted from the decoded JWT payload. It represents the time when the JWT was issued.
-  * 
+  * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 */
 exports.protect = catchAsync(async (req , res , next) => {
     // 1) Getting the token and check of it's there.
@@ -114,3 +117,20 @@ exports.protect = catchAsync(async (req , res , next) => {
    req.user = currentUser;
     next()
 });
+
+/**
+    * restricTo is for if certain role have action de modified , add , delete products.
+    * (...roles) = to accept a variable number of arguments as an array.
+    * roles to modified , add , delete product is admin and supervisor.
+    * roles ['admin' , 'supervisor']. !role = 'user' 
+    * The HTTP status code for this error is set to 403 (Forbidden).
+    * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+*/
+exports.restrictTo = (...roles) => {
+    return (req , res , next) => {
+        if(!roles.includes(req.user.role)) {
+            return next(new AppError('You do no have permision to perform this action' , 403));
+        }
+        next();
+    };
+};
