@@ -4,14 +4,21 @@ const authController = require('./../controllers/authController');
 
 const router = express.Router();
 
-//route define for user to sign up
+/*
+ * Route to define sign up and log in user.
+*/
 router.post('/signup' , authController.signup);
 router.post('/login' , authController.login);
 
+/*
+ * Route to define forgot password and reset password.
+*/
 router.post('/forgotPassword' , authController.forgotPassword);
-router.post('/resetPassword' , authController.resetPassword);
+router.patch('/resetPassword/:token' , authController.resetPassword);
 
-// Define routes
+/*
+ * Generic route to user.
+*/
 router
 .route('/')
 .get(userController.getAllUsers)
