@@ -70,6 +70,7 @@ const userSchema = new mongoose.Schema({
     * The number "13" represents the cost factor used by the bcrypt hashing algorithm.
     * It specifies the number of rounds the algorithm will perform during the password hashing process.
     * Delete passwordConfirm field after hash the password
+    * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 */
 userSchema.pre('save' , async function(next) {
     if(!this.isModified('password')) return next();
@@ -85,6 +86,7 @@ userSchema.pre('save' , async function(next) {
     * Use bcrypt.compare to securely compare the provided candidatePassword.
     *  with the hashed userPassword stored in the database.
     *  bcrypt.compare returns a Promise, so we use 'await' to wait for the result.
+    * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 */
 
 userSchema.methods.correctPassword = async function(candidatePassword , userPassword) {
@@ -92,7 +94,8 @@ userSchema.methods.correctPassword = async function(candidatePassword , userPass
 };
 
 /**
-    * In summary, this method is used to check if a given JWT timestamp is earlier than the timestamp when the user last changed their password,
+    * In summary, this method is used to check if a given JWT timestamp is earlier than the timestamp when the user last changed their password.
+    * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 */
 userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
     if (this.passwordChangedAt) {
@@ -108,6 +111,13 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
     return false;
   };
 
+  /**
+    * crypto.randomBytes(32).toString('hex'): This line generates 32 random bytes and converts them to a hexadecimal string.
+    * crypto.createHash('sha256').update(resetToken).digest('hex'): This line takes the random token generated in the previous step and computes its SHA-256 hash. 
+    * The hashed token is then stored in the passwordResetToken field of the document.
+    * his.passwordResetExpires = Date.now() + 10 * 60 * 1000;: This line sets the passwordResetExpires field to the current time (in milliseconds) plus 10 minutes. This means the token will expire after 10 minutes from the time it was generated.
+    * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+ */
   userSchema.methods.createPasswordResetToken = function() {
     const resetToken = crypto.randomBytes(32).toString('hex');
 
