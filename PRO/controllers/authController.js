@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const User = require('./../models/userModel');
@@ -181,4 +182,35 @@ exports.forgotPassword = catchAsync(async (req , res , next) => {
     }
 });
 
-exports.resetPassword = (req , res , next) => {};
+/**
+    * reset password using crypto to hash the toekn and update token and put in hex.
+    * using findOne and not findByID. We don't need the id of the user in this section.
+    * passwordResetToken and passwordResetExpires is not visible in database.
+    * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+*/
+exports.resetPassword = catchAsync(async (req , res , next) => {
+    // 1) Get user based on toekn.
+    const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+
+    const user = await User.findOne({ passwordResetToken: hashedToken , passwordResetExpires: { $gt: Date.now() }});
+
+    // 2) If token has not expired , and there is user , set the new password.
+    if(!user) {
+        return next(new AppError('Token is invalid or expired' , 400));
+    }
+
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+
+    await user.save();
+
+    // 3) Update changePassword property for the user.
+    // 4) Log the user , sent JWT.
+    const token = signToken(user._id);
+    res.status(200).json({
+        status : 'success',
+        token 
+    });
+});

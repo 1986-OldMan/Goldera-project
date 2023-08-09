@@ -127,7 +127,18 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
     this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
     console.log({resetToken} , this.passwordResetToken);
     return resetToken;
-}
+};
+
+  /**
+    * this section is a middleware to see if password is not changed or is create a new user.
+    * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+ */
+userSchema.pre('save' , function(next) {
+    if (!this.isModified('password') || this.isNew) return next();
+
+    this.passwordChangedAt = Date.now() - 1000;
+    next();
+});
 
 const User = mongoose.model('User' , userSchema);
 
