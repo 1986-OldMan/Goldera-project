@@ -24,7 +24,13 @@ router.patch('/updateMyPassword' , authController.protect , authController.updat
 /*
  * Route to define update user data.
 */
+
 router.patch('/updateMe' , authController.protect , userController.UpdateMe);
+
+/*
+ * Route to define for delete user , but not delete user from database.
+*/
+router.delete('/deleteMe' , authController.protect , userController.deleteMe);
 
 /*
  * Generic route to user.
