@@ -13,6 +13,8 @@ const sendEmail = require('./../utils/email');
  * JWT, or JSON Web Token, is an open standard used to share security information between two parties — a client and a server.
  * Each JWT contains encoded JSON objects, including a set of claims
  * jwt.sing it's for new user and referance is _id from mongodb.
+ * Set date for expires cookie with date now and coolie expires and convert in ms.
+ * section for cookie with expiration in 90 days with httpOnly and secure: true in production.
  * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
 */
 
@@ -23,14 +25,25 @@ const signToken = id => {
 const createSendToken = (user , statusCode , res) => {
     const token = signToken(user._id);
 
+    const cookieOptions = {
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000) ,
+        httpOnly: true 
+    };
+
+    if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+    res.cookie('jwt' , token , cookieOptions);
+
+    // remove the password from the output.
+    user.password = undefined;
+    
     res.status(statusCode).json({
         status : 'success',
         token ,
         data: {
             user
         }
-    })
-}
+    });
+};
 
 exports.signup = catchAsync(async (req , res , next) => {
     const newUser = await User.create({
