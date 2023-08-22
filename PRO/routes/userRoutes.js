@@ -24,7 +24,6 @@ router.patch('/updateMyPassword' , authController.protect , authController.updat
 /*
  * Route to define update user data.
 */
-
 router.patch('/updateMe' , authController.protect , userController.UpdateMe);
 
 /*
