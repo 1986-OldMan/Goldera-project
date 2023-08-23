@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -8,11 +9,23 @@ const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-//1) MIDDLEWARES------------------------------------------------------------------------------------------------------------------->
+//1) GLOBAL MIDDLEWARES------------------------------------------------------------------------------------------------------------------->
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 console.log('You are in : ' + process.env.NODE_ENV);
+
+/**
+   * Middleware for limit of user in case for many requests.
+   * This middleware work in routes where '/api' exist http requests! and limit to 100 requests.
+   * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+ */
+const limiter = rateLimit({
+  max: 100 ,
+  windowMs: 60 * 60 * 1000 ,
+  message: 'To many requests from this IP , Please try again in an hour!'
+});
+app.use('/api' , limiter);
 
 app.use(express.json());
 
