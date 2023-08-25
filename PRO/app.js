@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const mongoNoSQLInjection = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -77,6 +78,12 @@ app.use((req, res, next) => {
   // console.log(req.headers);
   next();
 });
+
+/**
+ * CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.
+ * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+ */
+app.use(cors('Access-Control-Allow-Origin'));
 
 //2) ROUTES------------------------------------------------------------------------------------------------------------------------>
 app.use('/api/v1/products' , productRouter);

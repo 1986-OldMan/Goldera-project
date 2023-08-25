@@ -40,29 +40,30 @@
         <span class="m--in">Sign In</span>
       </div>
     </div>
-    <div class="form sign-up">
+    <div class="form sign-up" id="registration-form-sign-up">
       <h2>Time to feel like home,</h2>
       <label>
         <span>Name</span>
-        <input type="text">
+        <input type="text" id="name">
       </label>
       <label>
         <span>Email</span>
-        <input type="email">
+        <input type="email" id="email">
       </label>
       <label>
         <span>Password</span>
-        <input type="password">
+        <input type="password" id="password">
       </label>
       <label>
         <span>Repeat password</span>
-        <input type="password">
+        <input type="password" id="passwordConfirm">
       </label>
-      <button type="button" class="submit" id="sign">Sign Up</button>
+      <button type="submit" class="submit" id="submit-data" onclick="SignUpUser(event)">Sign Up</button>
     </div>
   </div>
 </div>
 
 </body>
 <script src="../Public/js/registration-form.js"></script>
+<script src="../Public/js/signup-form.js"></script>
 </html>
