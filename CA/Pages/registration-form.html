@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign in/sign up page Gold Era</title>
+  <title>User form Gold Era</title>
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
   <link rel="stylesheet" href="../Public/css/registration-form.css">
   <link rel="shortcut icon" type="image/x-icon" href="https://images.squarespace-cdn.com/content/v1/5bc18d9ee8ba44e58680e6a3/1539452081495-LZBOBEDOLGVUHGY1Z0SE/favicon.ico?format=100w">
@@ -12,18 +12,18 @@
 </head>
 <body>
 <div class="cont">
-  <div class="form sign-in">
+  <div class="form sign-in" id="login-form">
     <h2>Welcome back,</h2>
     <label>
       <span>Email</span>
-      <input type="email">
+      <input type="email" id="email-login">
     </label>
     <label>
       <span>Password</span>
-      <input type="password">
+      <input type="password" id="password-login">
     </label>
     <p class="forgot-pass"><a href="#">Forgot password?</a></p>
-    <button type="button" class="submit">Sign In</button>
+    <button type="button" class="submit" onclick="logInUser(event)">Sign In</button>
   </div>
   <div class="sub-cont">
     <div class="img">
@@ -58,12 +58,12 @@
         <span>Repeat password</span>
         <input type="password" id="passwordConfirm">
       </label>
-      <button type="submit" class="submit" id="submit-data" onclick="SignUpUser(event)">Sign Up</button>
+      <button type="button" class="submit" id="submit-data" onclick="signUpUser(event)">Sign Up</button>
     </div>
   </div>
 </div>
 
 </body>
 <script src="../Public/js/registration-form.js"></script>
-<script src="../Public/js/signup-form.js"></script>
+<script src="../Public/js/SignUpAndLogInUser.js"></script>
 </html>
