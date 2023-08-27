@@ -33,7 +33,7 @@ const signUpUser = async (event) => {
 
       const data = await response.json();
       console.log('Successful login:', data);
-      // window.location.href = '/index.html' => this will be used after create index after user login/sign up.
+      window.location.href = '/index.html'
 
    } else {
       console.log('Login failed:', response.status);
@@ -73,6 +73,7 @@ const signUpUser = async (event) => {
 
          const data = await response.json();
          console.log('Successful login:', data);
+         window.location.href = 'index-user.html'; 
 
       } else {
          console.log('Login failed:', response.status);
@@ -82,6 +83,3 @@ const signUpUser = async (event) => {
    }
    userFormLogIn.addEventListener('submit', logInUser);
 };
-
-
-
