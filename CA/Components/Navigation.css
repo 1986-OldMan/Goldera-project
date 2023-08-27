@@ -1,5 +1,4 @@
 
-
 *{
     padding: 0;
     margin: 0;
@@ -95,7 +94,7 @@ body {
     position: fixed;
     top: 0;
     left: -100%;
-    width: 200px;
+    width: 300px;
     height: 100%;
     margin: 0;
     padding: 70px 0 0 0;
@@ -121,6 +120,27 @@ body {
   }
 
   .menu__item:hover {
+
+    background-color: #f48f01;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+    opacity: 0.8;
+    
+  }
+
+  .user__item {
+
+    display: block;
+    padding: 12px 24px;
+    color: #000000;
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    transition-duration: 0.3s;
+    opacity: 1;
+  }
+
+  .user__item:hover {
 
     background-color: #f48f01;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
