@@ -27,21 +27,21 @@ const signUpUser = async (event) => {
    });
    console.log(`Succesul sign up, data of user: \n${name} , \n${email} , \n${password} , \n${passwordConfirm}`);
 
-   userForm.addEventListener('submit' , signUpUser);
-
    if (response.ok) {
 
       const data = await response.json();
       console.log('Successful login:', data);
-      window.location.href = '/index.html'
-
+      window.location.href = 'index-user.html'
+      
    } else {
       console.log('Login failed:', response.status);
    }
   } catch (error) {
    console.error('Error during login:', error);
- }
-};
+  }
+ };
+ 
+  userForm.addEventListener('submit' , signUpUser);
 
 /*
  * Login user section.
@@ -81,5 +81,5 @@ const signUpUser = async (event) => {
    } catch (error) {
       console.error('Error during login:', error);
    }
-   userFormLogIn.addEventListener('submit', logInUser);
 };
+userFormLogIn.addEventListener('submit', logInUser);
