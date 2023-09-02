@@ -127,7 +127,7 @@ body {
     
   }
 
-  #welcome_message {
+   .user__item{
 
     display: block;
     padding: 12px 24px;
@@ -140,7 +140,7 @@ body {
     opacity: 1;
   }
 
-  #welcome_message:hover {
+  .user__item:hover {
 
     background-color: #f48f01;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
