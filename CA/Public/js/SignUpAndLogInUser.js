@@ -39,15 +39,14 @@ const signUpUser = async (event) => {
   } catch (error) {
    console.error('Error during login:', error);
   }
- };
  
   userForm.addEventListener('submit' , signUpUser);
+ };
 
 /*
  * Login user section.
 */
  const userFormLogIn = document.getElementById('login-form');
-
  const fetchUserLogInSection = async () => {
       const respons = await fetch('http://localhost:8000/api/v1/users/signup');
       const logIn = await respons.json();
@@ -81,5 +80,6 @@ const signUpUser = async (event) => {
    } catch (error) {
       console.error('Error during login:', error);
    }
+
+   userFormLogIn.addEventListener('submit', logInUser);
 };
-userFormLogIn.addEventListener('submit', logInUser);
