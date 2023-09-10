@@ -22,6 +22,7 @@ const forgotPassword = async () => {
             const data = await response.json();
             console.log('Successful reset password:' , data);
             resetMessage.textContent = 'Password reset instructions sent to your email.';
+            window.location.href = 'reset-password.html';
 
         } else if (!email) {
             resetMessage.textContent = 'Filed email is require!';
