@@ -8,7 +8,7 @@ const fetchForgotPassword = async () => {
 const forgotPassword = async () => {
     try {
         const email = document.getElementById('email').value;
-        const resetMessage = document.getElementById('resetMessage');
+        const message = document.getElementById('Message');
 
         const response = await fetch('http://localhost:8000/api/v1/users/forgotPassword' , {
             method: 'POST' ,
@@ -25,10 +25,12 @@ const forgotPassword = async () => {
             window.location.href = 'reset-password.html';
 
         } else if (!email) {
+
             resetMessage.textContent = 'Filed email is require!';
          }
           else {
-            resetMessage.textContent = 'Check email address and try again!';
+
+            resetMessage.textContent = 'Someting went wrong , check the fields and try again';
         }
 
     } catch (error) {

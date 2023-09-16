@@ -312,3 +312,11 @@
     transform: translate3d(0, 0, 0);
     
   }
+
+  .message {
+    
+    display: block;
+    margin: 25px auto 0;
+    text-align: center;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  }
