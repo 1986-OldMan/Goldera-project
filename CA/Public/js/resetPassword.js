@@ -26,6 +26,7 @@ const resetPassword = async () => {
          console.log('Successful reset password:', data);
          resetMessage.textContent = 'Reset password complete!';
          window.location.href = 'registration-form.html';
+         
      } else if (!password) {
 
       resetMessage.textContent = 'Filed password is require!';
@@ -40,7 +41,7 @@ const resetPassword = async () => {
 
     }  else {
 
-        resetMessage.textContent = 'Something went wrong!'
+        resetMessage.textContent = 'Someting went wrong , check the fields and try again'
         console.log('Reset password failed:', response.status);
     }
 
