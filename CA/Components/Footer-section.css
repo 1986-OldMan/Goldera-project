@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.footer {
+    background-color: black;
+    color: orange;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer:hover {
+    cursor: pointer;
+}
+
+.footer-content {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.company-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.company-name:hover {
+    text-decoration: underline;
+}
+
+.footer-info {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.help-section {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.help-section a {
+    color: orange;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+.help-section a:hover {
+    text-decoration: underline;
+}
