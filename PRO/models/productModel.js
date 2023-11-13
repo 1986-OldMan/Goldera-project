@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 const validator = require('validator');
+const User = require('../models/userModel');
 
 const {Schema} = mongoose;
 
@@ -13,18 +14,13 @@ const {Schema} = mongoose;
 */
 
 const productSchema = new mongoose.Schema({
-
-    idProduct: {
-        type: Number ,
-        select: false
-    },
-
+    
     name: {
         type: String ,
         required: [true , 'A product must have a name'] ,
         unique: true,
         trim: true,
-        maxLength: [75 , 'A product must have less or equal then 40 characters'],
+        maxLength: [75 , 'A product must have less or equal then 75 characters'],
         minLenght: [10 , 'A product must have more or equal then 10 characters'],
     },
 
@@ -32,7 +28,7 @@ const productSchema = new mongoose.Schema({
 
     price: {
         type: Number ,
-        required: [true , 'A product must have a name']
+        required: [true , 'A product must have a price']
     },
 
     description: {
@@ -92,7 +88,9 @@ const productSchema = new mongoose.Schema({
     rareProduct: {
         type: Boolean,
         default: false
-    }
+    },
+
+    employee: Array
 
 } , {
     toJSON: { virtuals: true },
@@ -111,10 +109,20 @@ productSchema.virtual('SellPrice').get(function() {
 
 /**
   *DOCUMENT MIDDLEWARE: runs before the save [ .save() ] command or create [ .create() ] command
-  *NOT WORK WITH .insertmany() , updateMany() , .findById() , .findByIdAndUpdate() , .findOne()
+  *NOT WORK WITH .insertmany() , updateMany() , .findByIdAndUpdate() , .findOne()
 */
 productSchema.pre('save' , function(next) {
     this.slug = slugify(this.name , { lower: true });
+    next();
+});
+
+/**
+  * This section is for employee who introduce new product!
+  * Used Promise.all , because this section is a promise => "this.employee.map(async id => await User.findById(id))"
+*/
+productSchema.pre('save' , async function(next) {
+    const employeePromises = this.employee.map(async id => await User.findById(id));
+    this.employee = await Promise.all(employeePromises);
     next();
 });
 
