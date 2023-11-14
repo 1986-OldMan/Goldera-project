@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-const validator = require('validator');
-const User = require('../models/userModel');
+// const validator = require('validator');
+// const User = require('../models/userModel');
 
 const {Schema} = mongoose;
 
@@ -11,6 +11,8 @@ const {Schema} = mongoose;
     * Type: Schema.Types.Mixed - it's to used in schema number or string in the same place.
     * The enum validator is an array that will check if the value given is an item in the array.
     * The trim in white spaces will be removed from both sides of the string.
+    * type: mongoose.Schema.ObjectId => to get the document ID from MongoDB.
+    * The ref is using for referance.
 */
 
 const productSchema = new mongoose.Schema({
@@ -90,7 +92,12 @@ const productSchema = new mongoose.Schema({
         default: false
     },
 
-    employee: Array
+    employee: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: 'User'
+        }
+    ]
 
 } , {
     toJSON: { virtuals: true },
@@ -120,11 +127,11 @@ productSchema.pre('save' , function(next) {
   * This section is for employee who introduce new product!
   * Used Promise.all , because this section is a promise => "this.employee.map(async id => await User.findById(id))"
 */
-productSchema.pre('save' , async function(next) {
-    const employeePromises = this.employee.map(async id => await User.findById(id));
-    this.employee = await Promise.all(employeePromises);
-    next();
-});
+// productSchema.pre('save' , async function(next) {
+//     const employeePromises = this.employee.map(async id => await User.findById(id));
+//     this.employee = await Promise.all(employeePromises);
+//     next();
+// });
 
 /**
   *QUERY MIDDLEWARE
