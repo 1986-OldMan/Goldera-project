@@ -137,10 +137,20 @@ productSchema.pre('save' , function(next) {
   *QUERY MIDDLEWARE
   *product.Schema.pre('find' , function(next) {
   * /^find/: is used to match any query operation that starts with 'find'
+  *populate() is the process of automatically replacing the specified paths in the document with documents from other collections.
 */
 productSchema.pre(/^find/ , function(next) {
     this.find({ rareProduct: { $ne: true} });
     this.start = Date.now();
+    next();
+});
+
+productSchema.pre(/^find/ , function(next) {
+    this.populate({
+        path: 'employee' ,
+        select: '-__v -passwordChangeAt'
+      });
+
     next();
 });
 
@@ -149,6 +159,7 @@ productSchema.post(/^find/ , function(docs , next) {
     console.log(docs);
     next();
 });
+
 
 /**
   *AGGREGATION MIDDLEWARE
