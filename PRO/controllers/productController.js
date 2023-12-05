@@ -41,7 +41,7 @@ exports.getAllProducts = catchAsync(async (req , res , next) => {
 });
 
 exports.getProduct = catchAsync(async (req , res , next) => {
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id).populate('reviews');
   // For MongoDB and line of code wrote above have reference for the id of product in database: Product.findOne({_id: req.params.id}).
 
   if (!product) {

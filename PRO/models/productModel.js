@@ -115,6 +115,18 @@ productSchema.virtual('SellPrice').get(function() {
 });
 
 /**
+  * Virtual populate
+  * To connect the productModel with review model
+    foreignField: => is to connect to models, in this exemple review with product.
+  * In review model have reference(ref) called product and connect to reference Product.
+*/
+productSchema.virtual('reviews' , {
+    ref: 'Review' ,
+    foreignField: 'products',
+    localField: '_id'
+});
+
+/**
   *DOCUMENT MIDDLEWARE: runs before the save [ .save() ] command or create [ .create() ] command
   *NOT WORK WITH .insertmany() , updateMany() , .findByIdAndUpdate() , .findOne()
 */
