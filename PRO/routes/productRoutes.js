@@ -1,8 +1,22 @@
 const express = require('express');
 const productController = require('./../controllers/productController');
 const authController = require('./../controllers/authController');
+const reviewRouter = require('./../routes/reviewRoutes');
 
 const router = express.Router();
+
+/*
+  * POST /products/234fad4/reviews -> it's example
+  * GET  /products/234fad4/reviews -> it's example
+  * GET  /products/234fad4/reviews/94887fda -> it's example
+   // router
+   // .route('/:productId/reviews')
+   // .post(authController.protect , authController.restrictTo('user') , reviewController.createReview);
+   * this section is merged ( mergeParams: true ) with review routes to se the review from products (nested routes)
+   * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+*/
+
+router.use('/:productId/reviews' , reviewRouter);
 
 // Creating routes for gold and silver products
 router.route('/gold-product')
