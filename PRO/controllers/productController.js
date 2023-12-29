@@ -2,6 +2,7 @@ const Product = require('./../models/productModel');
 const APIFeatures = require('./../utils/apiFeature');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const factory = require('./handlerFactory');
 
 // Middlewares for gold and silver product ---------->
 exports.aliasGoldProduct = (req , res , next) => {
@@ -56,50 +57,9 @@ exports.getProduct = catchAsync(async (req , res , next) => {
   });
 });
 
-exports.createProduct = catchAsync(async (req , res , next) => {
-    const newProduct = await Product.create(req.body);
-    //The HTTP 201 Created success status response code indicates that the request has succeeded and has led to the creation of a resource.
-    res.status(201).json({
-    status: "success",
-    data: {
-      product: newProduct,
-    }
-  });
-});
-
-exports.updateProduct = catchAsync(async (req , res , next) => {
-  const product = await Product.findByIdAndUpdate(req.params.id , req.body , {
-    new: true ,
-    //if true, runs update validators on this command. Update validators validate the update operation against the model's schema
-    runValidators: true
-  });
-
-  if (!product) {
-    return next(new AppError('No product found with that ID' , 404));
-  };
-
-  res.status(200).json({
-    requestedAt: req.requestTime,
-    status: "success",
-    data: {
-      product
-    },
-  });
-});
-
-exports.deleteProduct = catchAsync(async (req , res , next) => {
- const product = await Product.findByIdAndDelete(req.params.id);
- 
- if (!product) {
-   return next(new AppError('No product found with that ID' , 404));
-  };
-
-  //The HTTP 204 No Content success status response code indicates that a request has succeeded, but that the client doesn't need to navigate away from its current page.
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
-});
+exports.createProduct = factory.createOne(Product);
+exports.updateProduct = factory.updateOne(Product);
+exports.deleteProduct = factory.deleteOne(Product);
 
 
 /**
