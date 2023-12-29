@@ -1,6 +1,7 @@
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const factory = require('./handlerFactory');
 
 /**
  * This filter Object si used for search in all elements and allowed specific fields to return.
@@ -79,16 +80,11 @@ exports.UpdateMe = catchAsync(async(req , res , next) => {
     })
   };
   
-  exports.updateUser = (req , res) => {
-    res.status(500).json({
-      status: 'error' ,
-      message: 'This route is not defined!'
-    })
-  };
-  
-  exports.deleteUser = (req , res) => {
-    res.status(500).json({
-      status: 'error' ,
-      message: 'This route is not defined!'
-    })
-  };
+
+/**
+ * Do NOT update password with this!
+ * Because will not use save middleware => findByIdAndUpdate from mongoose/mongoDB.
+ * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+*/
+  exports.updateUser = factory.updateOne(User);
+  exports.deleteUser = factory.deleteOne(User);
