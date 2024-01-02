@@ -1,7 +1,6 @@
 const Product = require('./../models/productModel');
-const APIFeatures = require('./../utils/apiFeature');
 const catchAsync = require('./../utils/catchAsync');
-const AppError = require('./../utils/appError');
+// const AppError = require('./../utils/appError');
 const factory = require('./handlerFactory');
 
 // Middlewares for gold and silver product ---------->
@@ -22,41 +21,8 @@ exports.aliasSilverProduct = (req , res , next) => {
 };
 // Middlewares for gold and silver product ---------->
 
-exports.getAllProducts = catchAsync(async (req , res , next) => {
-  // Execute the Query
-  const features = new APIFeatures(Product.find() , req.query)
-     .filter()
-     .sort()
-     .limitFields()
-     .paginate();
-  const products = await features.query
-
-  //Send response 
-  res.status(200).json({
-    status : 'success' ,
-    result: products.length ,
-    data: {
-      products
-    }
-  });
-});
-
-exports.getProduct = catchAsync(async (req , res , next) => {
-  const product = await Product.findById(req.params.id).populate('reviews');
-  // For MongoDB and line of code wrote above have reference for the id of product in database: Product.findOne({_id: req.params.id}).
-
-  if (!product) {
-    return next(new AppError('No product found with that ID' , 404));
-  };
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      product,
-    }
-  });
-});
-
+exports.getAllProducts = factory.getAll(Product);
+exports.getProduct = factory.getOne(Product , { path: 'reviews' });
 exports.createProduct = factory.createOne(Product);
 exports.updateProduct = factory.updateOne(Product);
 exports.deleteProduct = factory.deleteOne(Product);
