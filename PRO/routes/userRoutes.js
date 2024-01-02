@@ -17,6 +17,12 @@ router.post('/forgotPassword' , authController.forgotPassword);
 router.patch('/resetPassword/:token' , authController.resetPassword);
 
 /*
+ * Route for user for current user
+*/
+
+router.get('/me' , authController.protect , userController.getMe , userController.getUser);
+
+/*
  * Route to define update password for user.
 */
 router.patch('/updateMyPassword' , authController.protect , authController.updatePassword);
