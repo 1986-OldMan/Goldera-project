@@ -104,6 +104,20 @@ const productSchema = new mongoose.Schema({
     toObject: { virtuals: true }
 });
 
+
+/**
+    * An index is a data structure that improves the speed of queries on a collection.
+    * Indexes are defined at the schema level and can be applied to one or more fields.
+    * Defining indexes in Mongoose allows you to optimize the performance of your queries and is an essential part of designing a MongoDB schema for efficient data retrieval.
+*/
+productSchema.index({ price: 1 });
+productSchema.index({ price: 1 , weight: 1 })
+productSchema.index({ price: 1 , stock: -1 })
+productSchema.index({ slug: 1 });
+productSchema.index({ weight: 1 });
+productSchema.index({ stock : 1 });
+
+
 /**
   * Virtual property in schema
   * Created function for sell customers back to us the product.    
