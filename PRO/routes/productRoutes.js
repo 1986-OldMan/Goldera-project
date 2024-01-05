@@ -26,22 +26,24 @@ router.route('/silver-product')
 .get(productController.aliasSilverProduct , productController.getAllProducts);
 
 //Creating routes for products stats
-router.route('/products-stats').get(productController.getProductsStats);
+router.route('/products-stats')
+.get(productController.getProductsStats);
 
 //Creating routes for product to see next stock
-router.route('/next-stock/:year').get(productController.getNextStock);
-
+router.route('/next-stock/:year')
+.get(authController.protect , authController.restrictTo('admin' , 'supervizor' , 'seller') , productController.getNextStock);
+ 
 
 // Define routes
 router
 .route('/')
-.get(authController.protect , productController.getAllProducts)
-.post(productController.createProduct);
+.get(productController.getAllProducts)
+.post(authController.protect , authController.restrictTo('admin' , 'supervizor' , 'seller' ), productController.createProduct);
 
 router
 .route('/:id')
 .get(productController.getProduct)
-.patch(productController.updateProduct)
+.patch(authController.protect , authController.restrictTo('admin' , 'supervisor'), productController.updateProduct)
 .delete(authController.protect , authController.restrictTo('admin' , 'supervisor') , productController.deleteProduct);
 
 module.exports = router;

@@ -17,25 +17,37 @@ router.post('/forgotPassword' , authController.forgotPassword);
 router.patch('/resetPassword/:token' , authController.resetPassword);
 
 /*
+  * Protect this routes afther this middleware(You need to login or signup!)
+  ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+*/
+router.use(authController.protect);
+
+
+/*
  * Route for user for current user
 */
-
-router.get('/me' , authController.protect , userController.getMe , userController.getUser);
+router.get('/me' , userController.getMe , userController.getUser);
 
 /*
  * Route to define update password for user.
 */
-router.patch('/updateMyPassword' , authController.protect , authController.updatePassword);
+router.patch('/updateMyPassword' , authController.updatePassword);
 
 /*
  * Route to define update user data.
 */
-router.patch('/updateMe' , authController.protect , userController.UpdateMe);
+router.patch('/updateMe' , userController.UpdateMe);
 
 /*
  * Route to define for delete user , but not delete user from database.
 */
-router.delete('/deleteMe' , authController.protect , userController.deleteMe);
+router.delete('/deleteMe' , userController.deleteMe);
+
+/*
+ * This is protected more by restriction and protect!
+ * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+*/
+router.use(authController.restrictTo('admin' , 'supervizor'))
 
 /*
  * Generic route to user.
