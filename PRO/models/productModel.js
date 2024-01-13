@@ -111,8 +111,8 @@ const productSchema = new mongoose.Schema({
     * Defining indexes in Mongoose allows you to optimize the performance of your queries and is an essential part of designing a MongoDB schema for efficient data retrieval.
 */
 productSchema.index({ price: 1 });
-productSchema.index({ price: 1 , weight: 1 })
-productSchema.index({ price: 1 , stock: -1 })
+productSchema.index({ price: 1 , weight: 1 });
+productSchema.index({ price: 1 , stock: -1 });
 productSchema.index({ slug: 1 });
 productSchema.index({ weight: 1 });
 productSchema.index({ stock : 1 });
